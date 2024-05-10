@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "client": "cd client && npm start",
-    "start": "nodemon server/index.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "server": "nodemon server/index.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
