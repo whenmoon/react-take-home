@@ -6,7 +6,7 @@ import * as tanstackQuery from '@tanstack/eslint-plugin-query'
 
 export const reactQuerylintConfig = {
   name: '@tanstack/query',
-  files: ['src/**/*.{ts,tsx}'],
+  files: ['src/**/*.{js,jsx,ts,tsx}'],
   plugins: {
     '@tanstack/query': {
       rules: tanstackQuery.rules,
@@ -17,7 +17,12 @@ export const reactQuerylintConfig = {
 
 export default [
   {
-    languageOptions: { globals: globals.browser },
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node
+      }
+    },
     rules: {
       semi: "error",
       "prefer-const": "error",
