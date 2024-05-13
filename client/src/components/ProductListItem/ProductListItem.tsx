@@ -23,7 +23,7 @@ export const ProductListItem = ({ product }: ProductListItemProps): ReactElement
 
   const handleEditProduct = () => {
     setProductId(id);
-    const modal = document.getElementById(EDIT_PRODUCT_MODAL_ID) as ModalElement;
+    const modal = document.getElementById(`${EDIT_PRODUCT_MODAL_ID}-${id}`) as ModalElement;
     modal?.showModal();
   };
 

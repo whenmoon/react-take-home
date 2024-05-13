@@ -1,5 +1,11 @@
 import { Product } from "../../api/types";
-import { ProductCategoryData } from "./types";
+import { ProductCategoryData, SelectOption } from "./types";
+
+export const capitalise = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1);
+
+export const createSelectOptions = (data: string[]): SelectOption[] => {
+  return data.map((item) => ({ value: item, label: capitalise(item) }));
+};
 
 export const getUniqueProductCategoryData = (products: Product[]): ProductCategoryData => {
   const productCategoryData = {
@@ -15,8 +21,8 @@ export const getUniqueProductCategoryData = (products: Product[]): ProductCatego
     productCategoryData['brands'].add(product.brand);
   });
   return {
-    types: Array.from(productCategoryData.types),
-    features: Array.from(productCategoryData.features),
-    brands: Array.from(productCategoryData.brands),
+    types: createSelectOptions(Array.from(productCategoryData.types)),
+    features: createSelectOptions(Array.from(productCategoryData.features)),
+    brands: createSelectOptions(Array.from(productCategoryData.brands)),
   };
 };

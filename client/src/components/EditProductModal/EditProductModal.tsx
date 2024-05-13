@@ -10,11 +10,10 @@ type EditProductModalProps = {
 
 export const EditProductModal = ({ productCategoryData }: EditProductModalProps): ReactElement => {
   const { productId } = useModalContext();
-  console.log(productId);
 
   return (
-    <dialog id={EDIT_PRODUCT_MODAL_ID} className="modal">
-      <div className="modal-box">
+    <dialog id={`${EDIT_PRODUCT_MODAL_ID}-${productId}`} className="modal">
+      <div className="modal-box min-h-[520px]">
         <EditProductModalContent productId={productId} productCategoryData={productCategoryData} />
       </div>
     </dialog >

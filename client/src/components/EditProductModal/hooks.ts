@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../api";
 import { Product, ValidationRequestBody } from "../../api/types";
-import { UseFormRegister, UseFormWatch, useForm } from "react-hook-form";
+import { Control, UseFormRegister, UseFormReset, UseFormWatch, useForm } from "react-hook-form";
 import { ProductForm } from "./types";
 import { useEffect, useRef } from "react";
 import { throttle } from 'lodash';
@@ -13,6 +13,8 @@ export const useEditProduct = (productId: number | null): {
   register: UseFormRegister<ProductForm>
   watch: UseFormWatch<ProductForm>
   nameValidationError: boolean | null;
+  control: Control<ProductForm>
+  resetForm: UseFormReset<ProductForm>
 } => {
   const { data: product, isFetching, isLoading, error } = useQuery({
     queryKey: ['product', productId],
@@ -28,6 +30,8 @@ export const useEditProduct = (productId: number | null): {
     register,
     //handleSubmit,
     watch,
+    control,
+    reset
   } = useForm<ProductForm>();
 
   const currentProductName = watch('name');
@@ -54,6 +58,8 @@ export const useEditProduct = (productId: number | null): {
     error,
     register,
     watch,
-    nameValidationError: mutation.isError
+    nameValidationError: mutation.isError,
+    control,
+    resetForm: reset
   };
 };

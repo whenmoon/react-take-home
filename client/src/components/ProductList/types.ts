@@ -1,5 +1,7 @@
+export type SelectOption = { value: string; label: string }
+
 export type ProductCategoryData = {
-  types: string[];
-  features: string[];
-  brands: string[];
+  types: SelectOption[];
+  features: SelectOption[];
+  brands: SelectOption[];
 };
