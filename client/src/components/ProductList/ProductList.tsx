@@ -8,7 +8,6 @@ import { EditProductModal } from "../EditProductModal";
 export const ProductList = (): ReactElement => {
 
   const { products, isLoading, error } = useProducts();
-  console.log('log');
 
   if (error) return <ErrorAlert error={error} />;
 
