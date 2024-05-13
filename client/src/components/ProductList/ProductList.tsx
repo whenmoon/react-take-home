@@ -3,10 +3,12 @@ import { useProducts } from "../AppContainer/hooks";
 import { Loading } from "../Loading/Loading";
 import { ErrorAlert } from "../ErrorAlert";
 import { ProductListItem } from "../ProductListItem";
+import { EditProductModal } from "../EditProductModal";
 
 export const ProductList = (): ReactElement => {
 
   const { products, isLoading, error } = useProducts();
+  console.log('log');
 
   if (error) return <ErrorAlert error={error} />;
 
@@ -20,6 +22,7 @@ export const ProductList = (): ReactElement => {
             key={`${product.id}-${idx}`}
             product={product} />
         )}
+        <EditProductModal />
       </div>
     );
   } else {
