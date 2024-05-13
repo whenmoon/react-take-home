@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 type ErrorAlertProps = {
   error?: Error;
 }
 
-export const ErrorAlert = ({ error }: ErrorAlertProps) => {
+export const ErrorAlert = ({ error }: ErrorAlertProps): ReactElement => {
   return (
     <div role="alert" className="alert alert-error">
       <svg

@@ -26,7 +26,7 @@ export default [
     rules: {
       semi: "error",
       "prefer-const": "error",
-      "max-len": ["error", { "code": 100 }]
+      "max-len": ["error", { "code": 120 }]
     },
     files: ["src/**/*.ts", "src/**/*.tsx"],
     ignores: ["**/*.config.js", "!**/eslint.config.mjs"],

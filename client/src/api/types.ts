@@ -11,6 +11,6 @@ export type Product = {
   brand: string,
   colour?: string,
   style?: string,
-  materials?: string[],
+  materials?: string,
   neckline?: string,
 }
