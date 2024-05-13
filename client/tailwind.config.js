@@ -26,6 +26,13 @@ module.exports = {
           "warning-content": "#150300",
           "error": "#ff0049",
           "error-content": "#160002",
+          screens: {
+            'sm': '640px',
+            'md': '768px',
+            'lg': '1024px',
+            'xl': '1280px',
+            '2xl': '1536px',
+          }
         },
       },
     ],
