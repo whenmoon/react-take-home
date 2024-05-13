@@ -1,14 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../../api";
 import { Product } from "../../api/types";
-import { getProductTypes } from "./utils";
+import { getUniqueProductCategoryData } from "./utils";
 import { useMemo } from "react";
+import { ProductCategoryData } from "./types";
 
 export const useProducts = (): {
   products: Product[] | undefined;
   isLoading: boolean;
   error: Error | null;
-  productTypes: string[];
+  productCategoryData: ProductCategoryData;
 } => {
   const { data: products, isFetching, isLoading, error } = useQuery({
     queryKey: ['products'],
@@ -16,7 +17,7 @@ export const useProducts = (): {
   });
 
 
-  const productTypes = useMemo(() => getProductTypes(products || []), [products]);
+  const productCategoryData = useMemo(() => getUniqueProductCategoryData(products || []), [products]);
 
-  return { products, isLoading: isLoading || isFetching, error, productTypes };
+  return { products, isLoading: isLoading || isFetching, error, productCategoryData };
 };

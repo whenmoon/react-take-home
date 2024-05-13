@@ -2,16 +2,21 @@ import React, { ReactElement } from "react";
 import { useEditProduct } from "../EditProductModal/hooks";
 import { ErrorAlert } from "../ErrorAlert";
 import { Loading } from "../Loading";
-import { capitalise } from "./utils";
+import { CLOTHING_SIZE, FOOTWARE_SIZE } from "../../constants";
+import { ProductCategoryData } from "../ProductList/types";
+import { Select } from "../Select";
 
 
 type EditProductModalContentProps = {
   productId: number | null;
-  productTypes: string[];
+  productCategoryData: ProductCategoryData;
 };
 
-export const EditProductModalContent = ({ productId, productTypes }: EditProductModalContentProps): ReactElement => {
-  const { product, isLoading, error, register } = useEditProduct(productId);
+export const EditProductModalContent = ({
+  productId,
+  productCategoryData,
+}: EditProductModalContentProps): ReactElement => {
+  const { product, isLoading, error, register, watch } = useEditProduct(productId);
 
   if (error) return (
     <div>
@@ -25,9 +30,13 @@ export const EditProductModalContent = ({ productId, productTypes }: EditProduct
   if (isLoading) return <Loading />;
 
   if (product) {
-    const { name, id } = product;
+    const { name, type, id } = product;
+    const { types, features, brands } = productCategoryData;
+    const selectedProductType = watch("type");
+    console.log('WATCH', watch());
+
     return (
-      <div >
+      <div>
         <h3 className="font-bold text-lg">Edit Product Information</h3>
         <label className="form-control w-full max-w-xs">
           <div className="label mt-4">
@@ -36,26 +45,36 @@ export const EditProductModalContent = ({ productId, productTypes }: EditProduct
           <input
             type="text"
             placeholder="Product name"
-            className="input input-bordered input-primary w-full max-w-xs"
+            className="input input-bordered input-accent w-full max-w-xs"
             defaultValue={name}
-            {...register("productName")}
+            {...register("name")}
           />
           <div className="label">
           </div>
         </label>
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">Product type</span>
-          </div>
-          <select className="select select-bordered">
-            <option disabled selected>Pick one</option>
-            {productTypes.map((type, idx) => (
-              <option key={`${type}-${idx}`} value={type}>
-                {capitalise(type)}
-              </option>
-            ))}
-          </select>
-        </label>
+        <Select options={types} register={register} registerKey="type" label="Product Type" />
+        {selectedProductType &&
+          <>
+            <Select
+              options={selectedProductType === 'footware' ? FOOTWARE_SIZE : CLOTHING_SIZE}
+              register={register}
+              registerKey="size"
+              label="Size"
+            />
+            <Select
+              options={features}
+              register={register}
+              registerKey="features"
+              label="Features"
+            />
+            <Select
+              options={brands}
+              register={register}
+              registerKey="brand"
+              label="Brand"
+            />
+          </>
+        }
         <div className="modal-action">
           <form method="dialog">
             <button className="btn">Close</button>

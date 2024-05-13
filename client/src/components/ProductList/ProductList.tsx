@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { useProducts } from "../AppContainer/hooks";
+import { useProducts } from "./hooks";
 import { Loading } from "../Loading/Loading";
 import { ErrorAlert } from "../ErrorAlert";
 import { ProductListItem } from "../ProductListItem";
@@ -7,7 +7,7 @@ import { EditProductModal } from "../EditProductModal";
 
 export const ProductList = (): ReactElement => {
 
-  const { products, isLoading, error, productTypes } = useProducts();
+  const { products, isLoading, error, productCategoryData } = useProducts();
 
   if (error) return <ErrorAlert error={error} />;
 
@@ -21,7 +21,7 @@ export const ProductList = (): ReactElement => {
             key={`${product.id}-${idx}`}
             product={product} />
         )}
-        <EditProductModal productTypes={productTypes} />
+        <EditProductModal productCategoryData={productCategoryData} />
       </div>
     );
   } else {
