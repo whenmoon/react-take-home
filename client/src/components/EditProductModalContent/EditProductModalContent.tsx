@@ -3,10 +3,10 @@ import { useEditProduct } from "../EditProductModal/hooks";
 import { ErrorAlert } from "../ErrorAlert";
 import { Loading } from "../Loading";
 import { CLOTHING_SIZES, FOOTWARE_SIZES } from "../../constants";
-import { ProductCategoryData, SelectOption } from "../ProductList/types";
+import { ProductCategoryData } from "../ProductList/types";
 import { Select } from "../Select";
 import { createSelectOptions } from "../ProductList/utils";
-import { PropsValue } from "react-select";
+//import { PropsValue } from "react-select";
 
 
 type EditProductModalContentProps = {
@@ -26,8 +26,10 @@ export const EditProductModalContent = ({
     watch,
     nameValidationError,
     control,
-    resetForm
+    resetForm,
+    setProductId,
   } = useEditProduct(productId);
+
 
   if (error) return (
     <div>
@@ -40,16 +42,20 @@ export const EditProductModalContent = ({
 
   if (isLoading) return <Loading />;
 
+
   const handleCloseModal = () => {
     resetForm();
+    setProductId(null);
   };
 
   if (product) {
     const { name, type, id, brand } = product;
     const { types, features, brands } = productCategoryData;
     const selectedProductType = watch("type");
-    console.log('selectedProductType', selectedProductType);
-    console.log('name', name);
+
+    const sizeOptions = selectedProductType?.value === 'footwear'
+      ? createSelectOptions(FOOTWARE_SIZES)
+      : createSelectOptions(CLOTHING_SIZES);
 
     return (
       <>
@@ -71,7 +77,7 @@ export const EditProductModalContent = ({
                 <span className="label-text text-red-600">Error: product name must be unique.</span>
               </div>}
           </label>
-          <Select<SelectOption>
+          <Select
             options={types}
             name="type"
             label="Product Type"
@@ -79,45 +85,45 @@ export const EditProductModalContent = ({
           />
           {selectedProductType &&
             <>
-              <Select<SelectOption>
-                options={selectedProductType === 'footware'
-                  ? createSelectOptions(FOOTWARE_SIZES)
-                  : createSelectOptions(CLOTHING_SIZES)
-                }
+              <Select
+                options={sizeOptions}
                 name="sizes"
                 label="Available sizes"
                 control={control}
+                isMulti
               />
-              <Select<SelectOption>
+              <Select
                 options={features}
                 name="features"
                 label="Available features"
                 control={control}
+                isMulti
               />
-              <Select<SelectOption>
+              <Select
                 options={brands}
                 name="brand"
                 label="Brand"
-                defaultValue={brand as PropsValue<SelectOption> & string}
+                defaultValue={createSelectOptions([brand])[0]}
                 control={control}
               />
             </>
           }
+          <div className="flex gap-6 justify-end">
+            <div className="modal-action">
+              <button className="btn btn-accent" onClick={handleCloseModal}>Submit Changes</button>
+            </div>
+            <div className="modal-action">
+              <button className="btn btn-primary" onClick={handleCloseModal}>Close</button>
+            </div>
+          </div>
         </form>
-        <div className="modal-action">
-          <form method="dialog">
-            <button className="btn" onClick={handleCloseModal}>Close</button>
-          </form>
-        </div>
       </>
     );
   } else {
     return (
       <div className="prose italic">
         <h1>Sorry, no product found with product ID.</h1>
-        <form method="dialog">
-          <button className="btn" onClick={handleCloseModal}>Close</button>
-        </form>
+        <button className="btn" onClick={handleCloseModal}>Close</button>
       </div>
     );
   }

@@ -2,16 +2,11 @@ import React, { ReactElement } from "react";
 import { Product } from "../../api/types";
 import { ProductItemLabel } from "../ProductItemLabel";
 import { parseProductSpecifications } from "./utils";
-import { EDIT_PRODUCT_MODAL_ID } from "../../constants";
 import { useModalContext } from "../../context/ModalContext";
 
 type ProductListItemProps = {
   product: Product;
 };
-
-type ModalElement = HTMLElement & {
-  showModal: () => void;
-} | null
 
 export const ProductListItem = ({ product }: ProductListItemProps): ReactElement => {
   const { name, type, brand, sizes, features, colour, style, materials, neckline, id } = product;
@@ -23,8 +18,6 @@ export const ProductListItem = ({ product }: ProductListItemProps): ReactElement
 
   const handleEditProduct = () => {
     setProductId(id);
-    const modal = document.getElementById(`${EDIT_PRODUCT_MODAL_ID}-${id}`) as ModalElement;
-    modal?.showModal();
   };
 
   return (

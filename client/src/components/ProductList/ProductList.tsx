@@ -7,7 +7,12 @@ import { EditProductModal } from "../EditProductModal";
 
 export const ProductList = (): ReactElement => {
 
-  const { products, isLoading, error, productCategoryData } = useProducts();
+  const {
+    products,
+    isLoading,
+    error,
+    productCategoryData,
+  } = useProducts();
 
   if (error) return <ErrorAlert error={error} />;
 

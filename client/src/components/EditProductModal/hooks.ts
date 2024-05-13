@@ -3,8 +3,9 @@ import { api } from "../../api";
 import { Product, ValidationRequestBody } from "../../api/types";
 import { Control, UseFormRegister, UseFormReset, UseFormWatch, useForm } from "react-hook-form";
 import { ProductForm } from "./types";
-import { useEffect, useRef } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { throttle } from 'lodash';
+import { useModalContext } from "../../context/ModalContext";
 
 export const useEditProduct = (productId: number | null): {
   product?: Product
@@ -15,6 +16,7 @@ export const useEditProduct = (productId: number | null): {
   nameValidationError: boolean | null;
   control: Control<ProductForm>
   resetForm: UseFormReset<ProductForm>
+  setProductId: Dispatch<SetStateAction<number | null>>
 } => {
   const { data: product, isFetching, isLoading, error } = useQuery({
     queryKey: ['product', productId],
@@ -31,10 +33,15 @@ export const useEditProduct = (productId: number | null): {
     //handleSubmit,
     watch,
     control,
-    reset
+    reset,
+    //getValues
   } = useForm<ProductForm>();
 
-  const currentProductName = watch('name');
+  useEffect(() => {
+    //console.log('formState', getValues());
+  }, [watch()]);
+
+  const currentProductName = watch('name')?.value;
 
   const mutation = useMutation({
     mutationFn: (data: ValidationRequestBody) => api.products.validateProductName(data),
@@ -52,6 +59,8 @@ export const useEditProduct = (productId: number | null): {
     }
   }, [productId, currentProductName]);
 
+  const { setProductId } = useModalContext();
+
   return {
     product,
     isLoading: isLoading || isFetching,
@@ -60,6 +69,7 @@ export const useEditProduct = (productId: number | null): {
     watch,
     nameValidationError: mutation.isError,
     control,
-    resetForm: reset
+    resetForm: reset,
+    setProductId
   };
 };

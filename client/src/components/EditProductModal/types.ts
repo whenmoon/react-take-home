@@ -1,7 +1,9 @@
+import { SelectOption } from "../ProductList/types";
+
 export type ProductForm = {
-  name: string
-  type: string
-  sizes: string
-  features: string
-  brand: string
+  name: SelectOption
+  type: SelectOption
+  sizes: SelectOption[]
+  features: SelectOption[]
+  brand: SelectOption
 }
