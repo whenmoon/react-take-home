@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Product } from './types';
+import { Product, ValidationRequestBody } from './types';
 import { BASE_API_URL } from '../constants';
 
 
@@ -29,26 +29,20 @@ axios.interceptors.response.use(
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const request = {
-  get: <T>(
-    url: string,
-    config?: AxiosRequestConfig
-  ) => axios.get<T>(url, config).then(responseBody),
-  post: <T>(
-    url: string,
-    config?: AxiosRequestConfig
-  ) => axios.post<T>(url, config).then(responseBody),
-  put: <T>(
-    url: string,
-    config?: AxiosRequestConfig
-  ) => axios.put<T>(url, config).then(responseBody),
+  get: <T>(url: string, config?: AxiosRequestConfig) =>
+    axios.get<T>(url, config).then(responseBody),
+  post: <T>(url: string, data?: T, config?: AxiosRequestConfig) =>
+    axios.post<T>(url, data, config).then(responseBody),
+  put: <T>(url: string, data?: T, config?: AxiosRequestConfig) =>
+    axios.put<T>(url, data, config).then(responseBody),
 };
 
 const products = {
   getProducts: () => request.get<Product[]>('/products'),
   getProduct: (id: number) => request.get<Product>(`/products/${id}`),
-  validateProductName: () => request.post<void>('/validate'),
+  validateProductName: (data: ValidationRequestBody) => request.post<ValidationRequestBody>('/validate', data),
   updateProduct: (id: number) => request.put<Product>(`/products/${id}`),
-  addProduct: (product: Product) => request.post<Product>('/products', { data: product }),
+  addProduct: (product: Product) => request.post<Product>('/products', { ...product }),
 };
 
 export const api = { products };

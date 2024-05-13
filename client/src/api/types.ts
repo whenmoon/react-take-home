@@ -14,3 +14,8 @@ export type Product = {
   materials?: string,
   neckline?: string,
 }
+
+export type ValidationRequestBody = {
+  id: number,
+  name: string,
+}

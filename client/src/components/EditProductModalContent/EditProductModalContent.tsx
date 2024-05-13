@@ -16,7 +16,7 @@ export const EditProductModalContent = ({
   productId,
   productCategoryData,
 }: EditProductModalContentProps): ReactElement => {
-  const { product, isLoading, error, register, watch } = useEditProduct(productId);
+  const { product, isLoading, error, register, watch, nameValidationError } = useEditProduct(productId);
 
   if (error) return (
     <div>
@@ -33,7 +33,6 @@ export const EditProductModalContent = ({
     const { name, type, id } = product;
     const { types, features, brands } = productCategoryData;
     const selectedProductType = watch("type");
-    console.log('WATCH', watch());
 
     return (
       <div>
@@ -49,8 +48,10 @@ export const EditProductModalContent = ({
             defaultValue={name}
             {...register("name")}
           />
-          <div className="label">
-          </div>
+          {nameValidationError &&
+            <div className="label">
+              <span className="label-text text-red-600">Error: product name must be unique.</span>
+            </div>}
         </label>
         <Select options={types} register={register} registerKey="type" label="Product Type" />
         {selectedProductType &&
@@ -58,14 +59,14 @@ export const EditProductModalContent = ({
             <Select
               options={selectedProductType === 'footware' ? FOOTWARE_SIZE : CLOTHING_SIZE}
               register={register}
-              registerKey="size"
-              label="Size"
+              registerKey="sizes"
+              label="Available sizes"
             />
             <Select
               options={features}
               register={register}
               registerKey="features"
-              label="Features"
+              label="Available features"
             />
             <Select
               options={brands}

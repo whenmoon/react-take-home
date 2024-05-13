@@ -1,7 +1,7 @@
 export type ProductForm = {
   name: string
   type: string
-  size: string
+  sizes: string
   features: string
   brand: string
 }
