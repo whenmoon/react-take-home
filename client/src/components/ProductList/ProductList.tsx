@@ -7,7 +7,7 @@ import { EditProductModal } from "../EditProductModal";
 
 export const ProductList = (): ReactElement => {
 
-  const { products, isLoading, error } = useProducts();
+  const { products, isLoading, error, productTypes } = useProducts();
 
   if (error) return <ErrorAlert error={error} />;
 
@@ -21,7 +21,7 @@ export const ProductList = (): ReactElement => {
             key={`${product.id}-${idx}`}
             product={product} />
         )}
-        <EditProductModal />
+        <EditProductModal productTypes={productTypes} />
       </div>
     );
   } else {
