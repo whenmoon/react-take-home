@@ -1,5 +1,6 @@
 import React from "react";
 import { Product } from "../../api/types";
+import { ProductItemLabel } from "../ProductItemLabel";
 
 type ProductListItemProps = {
   product: Product;
@@ -14,12 +15,12 @@ export const ProductListItem = ({ product }: ProductListItemProps) => {
       <div className="stats bg-primary text-primary-content shadow-2xl w-full glass">
         <div className="stat">
           <div className="stat-value capitalize">{product.name}</div>
-          <div className="stat-title capitalize font-bold p-1">{product.type}</div>
-          <div className="stat-title capitalize font-bold p-1">{product.brand}</div>
-          <div className="stat-title p-1">{`Available Sizes: ${sizes}`}</div>
-          <div className="stat-title p-1">{`Features: ${features}`}</div>
+          <ProductItemLabel label={product.type} capitalize bold />
+          <ProductItemLabel label={product.brand} capitalize bold />
+          <ProductItemLabel label={`Available Sizes: ${sizes}`} />
+          <ProductItemLabel label={`Features: ${features}`} />
           <div className="stat-actions flex">
-            <button className="btn btn-sm btn-success">Edit Product</button>
+            <button className="btn btn-md btn-accent">Edit Product</button>
           </div>
         </div>
       </div>
