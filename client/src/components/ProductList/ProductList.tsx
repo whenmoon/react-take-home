@@ -12,13 +12,21 @@ export const ProductList = (): ReactElement => {
 
   if (isLoading) return <Loading />;
 
-  return (
-    <div className="w-full">
-      {products?.map((product, idx) =>
-        <ProductListItem
-          key={`${product.id}-${idx}`}
-          product={product} />
-      )}
-    </div>
-  );
+  if (products && products.length > 0) {
+    return (
+      <div className="w-full">
+        {products.map((product, idx) =>
+          <ProductListItem
+            key={`${product.id}-${idx}`}
+            product={product} />
+        )}
+      </div>
+    );
+  } else {
+    return (
+      <div className="prose italic">
+        <h1>Sorry, no products found.</h1>
+      </div>
+    );
+  }
 };
