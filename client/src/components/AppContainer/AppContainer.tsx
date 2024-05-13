@@ -2,12 +2,17 @@ import React, { ReactElement } from "react";
 import { ProductList } from "../ProductList";
 
 export const AppContainer = (): ReactElement => (
-  <div>
+  <div className="min-h-screen flex justify-center items-center p-12">
     <ProductList />
-    <div className="min-h-screen flex justify-center items-center">
+    {/*<div className="min-h-screen flex justify-center items-center">
       <div className="container mx-auto px-4">
         <div className="card w-96 bg-base-100 shadow-xl">
-          <figure><img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
+          <figure>
+          <img 
+          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" 
+          alt="Shoes" 
+          />
+          </figure>
           <div className="card-body">
             <h2 className="card-title">Shoes!</h2>
             <p>If a dog chews shoes whose shoes does he choose?</p>
@@ -34,6 +39,6 @@ export const AppContainer = (): ReactElement => (
           </div>
         </div>
       </div>
-    </div>
+    </div>*/}
   </div>
 );

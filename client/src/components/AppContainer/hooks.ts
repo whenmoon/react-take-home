@@ -4,7 +4,6 @@ import { Product } from "../../api/types";
 
 export const useProducts = (): {
   products: Product[] | undefined;
-  isFetching: boolean;
   isLoading: boolean;
   error: Error | null;
 } => {
@@ -12,5 +11,5 @@ export const useProducts = (): {
     queryKey: ['products'],
     queryFn: () => api.products.getProducts(),
   });
-  return { products, isFetching, isLoading, error };
+  return { products, isLoading: isLoading || isFetching, error };
 };

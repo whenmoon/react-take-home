@@ -1,15 +1,18 @@
 import React, { ReactElement } from "react";
 import { useProducts } from "../AppContainer/hooks";
+import { Loading } from "../Loading/Loading";
+import { ErrorAlert } from "../ErrorAlert";
 
 export const ProductList = (): ReactElement => {
 
-  const { products } = useProducts();
+  const { products, isLoading, error } = useProducts();
 
-  console.log('products', products);
+  if (error) return <ErrorAlert error={error} />;
 
+  if (isLoading) return <Loading />;
 
   return (
-    <div className="min-h-screen flex justify-center items-center">
+    <div>
       Product List
     </div>
   );
