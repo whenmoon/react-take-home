@@ -1,0 +1,1 @@
+export { ProductItemLabel } from './ProductItemLabel';
