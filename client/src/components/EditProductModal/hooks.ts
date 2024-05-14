@@ -9,6 +9,32 @@ import { useModalContext } from "../../context/ModalContext";
 import { parseFormData } from "./utils";
 import { SetProductUpdateSuccess } from "../ProductList/types";
 
+const useThrotteldMutation = (
+  data: ValidationRequestBody,
+  watch: UseFormWatch<ProductForm>,
+  productId?: number
+): boolean => {
+  const { mutate: validationMutation, isError: isValidationMutationError } = useMutation({
+    mutationFn: (data: ValidationRequestBody) => api.products.validateProductName(data),
+  });
+
+  const throttledMutation = throttle((data: ValidationRequestBody): void => {
+    validationMutation(data);
+  }, 500);
+
+  const throttledMutationRef = useRef(throttledMutation);
+
+  const currentProductName = watch('name');
+
+  useEffect(() => {
+    if (currentProductName) {
+      throttledMutationRef.current({ id: productId, name: currentProductName });
+    }
+  }, [productId, currentProductName]);
+
+  return isValidationMutationError;
+};
+
 export const useEditProduct = (
   setProductUpdateSuccess: SetProductUpdateSuccess,
   newProduct: boolean,
@@ -48,9 +74,9 @@ export const useEditProduct = (
     formState: { errors }
   } = useForm<ProductForm>({ defaultValues: { name: product?.name } });
 
+  // Reset type dependent options when the product type changes
   useEffect(() => {
     if (watch('type')?.value) {
-      // Reset type dependent options when the product type changes
       reset({
         ...getValues(),
         sizes: [],
@@ -59,23 +85,11 @@ export const useEditProduct = (
     }
   }, [watch('type')?.value]);
 
-  const { mutate: validationMutation, isError: isValidationMutationError } = useMutation({
-    mutationFn: (data: ValidationRequestBody) => api.products.validateProductName(data),
-  });
-
-  const throttledMutation = throttle((data: ValidationRequestBody): void => {
-    validationMutation(data);
-  }, 500);
-
-  const throttledMutationRef = useRef(throttledMutation);
-
-  const currentProductName = watch('name');
-
-  useEffect(() => {
-    if (currentProductName) {
-      throttledMutationRef.current({ id: productId, name: currentProductName });
-    }
-  }, [productId, currentProductName]);
+  const isValidationMutationError = useThrotteldMutation(
+    { id: productId, name: watch('name') },
+    watch,
+    productId
+  );
 
   const { setProductId, setNewProduct } = useModalContext();
 
