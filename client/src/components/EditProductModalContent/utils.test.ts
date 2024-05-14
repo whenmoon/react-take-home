@@ -19,6 +19,7 @@ describe("parseFormData", () => {
     material: { value: "material", label: "Material" },
     neckline: { value: "neckline", label: "Neckline" },
   };
+
   const expected = {
     name: "Product Name",
     type: "clothing",
@@ -30,23 +31,19 @@ describe("parseFormData", () => {
     materials: "material",
     neckline: "neckline",
   };
+
   it("should parse form data correctly without productId", () => {
-
     const result = parseFormData(formData);
-
     expect(result).toEqual(expected);
   });
 
   it("should parse form data correctly with productId", () => {
     const productId = 123;
-
     const expectedWithId = {
       id: 123,
       ...expected,
     };
-
     const result = parseFormData(formData, productId);
-
     expect(result).toEqual(expectedWithId);
   });
 });
