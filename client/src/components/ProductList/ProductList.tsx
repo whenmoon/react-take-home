@@ -26,9 +26,15 @@ export const ProductList = (): ReactElement => {
         <div className="w-full">
           <div className="flex justify-between pr-4">
             <div className="prose pl-4 self-end mb-4">
-              <h1 className="leading-[0px]">{`Products (${products.length})`}</h1>
+              <h1
+                className="leading-[0px] text-2xl md:text-3xl lg:text-4xl xl:text-5xl">{`Products (${products.length})`}
+              </h1>
             </div>
-            <button className="btn btn-warning" onClick={handleCreateProduct}>Create Product</button>
+            <button
+              className="btn btn-warning text-base md:text-lg lg:text-xl xl:text-2xl"
+              onClick={handleCreateProduct}>
+              Create Product
+            </button>
           </div>
           {productUpdateSuccess && <Alert message={productUpdateSuccess.message} type="success" />}
           {products.map((product, idx) =>

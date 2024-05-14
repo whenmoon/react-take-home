@@ -54,7 +54,11 @@ export const EditProductModalContent = ({
               type="error"
             />
           </div>
-          <button className="btn w-max flex m-32" onClick={handleCloseModal}>Close</button>
+          <button
+            className="btn w-max flex m-32 text-base md:text-lg lg:text-xl xl:text-2xl"
+            onClick={handleCloseModal}>
+            Close
+          </button>
         </div>
       </div>
     );
