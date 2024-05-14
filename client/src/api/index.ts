@@ -41,7 +41,7 @@ const products = {
   getProducts: () => request.get<Product[]>('/products'),
   getProduct: (id: number) => request.get<Product>(`/products/${id}`),
   validateProductName: (data: ValidationRequestBody) => request.post<ValidationRequestBody>('/validate', data),
-  updateProduct: (id: number) => request.put<Product>(`/products/${id}`),
+  updateProduct: ({ id, ...rest }: Product) => request.put<Omit<Product, 'id'>>(`/products/${id}`, { ...rest }),
   addProduct: (product: Product) => request.post<Product>('/products', { ...product }),
 };
 

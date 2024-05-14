@@ -6,7 +6,6 @@ import { ProductListItem } from "../ProductListItem";
 import { EditProductModal } from "../EditProductModal";
 
 export const ProductList = (): ReactElement => {
-
   const {
     products,
     isLoading,

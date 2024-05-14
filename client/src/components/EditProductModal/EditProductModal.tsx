@@ -1,5 +1,4 @@
 import React, { ReactElement } from "react";
-//import { EDIT_PRODUCT_MODAL_ID } from "../../constants";
 import { EditProductModalContent } from "../EditProductModalContent";
 import { useModalContext } from "../../context/ModalContext";
 import { ProductCategoryData } from "../ProductList/types";
@@ -13,9 +12,6 @@ export const EditProductModal = ({ productCategoryData }: EditProductModalProps)
   const { productId } = useModalContext();
 
   return (
-    //<dialog id={`${EDIT_PRODUCT_MODAL_ID}-${productId}`} className="modal">
-    //<div className="flex justify-center align-middle">
-
     <ReactModal
       isOpen={!!productId}
       ariaHideApp={false}
@@ -32,8 +28,5 @@ export const EditProductModal = ({ productCategoryData }: EditProductModalProps)
     >
       <EditProductModalContent productId={productId} productCategoryData={productCategoryData} />
     </ReactModal>
-    //</div >
-
-    //</dialog >
   );
 };

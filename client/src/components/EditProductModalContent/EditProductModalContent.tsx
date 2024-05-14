@@ -5,8 +5,7 @@ import { Loading } from "../Loading";
 import { CLOTHING_SIZES, FOOTWARE_SIZES } from "../../constants";
 import { ProductCategoryData } from "../ProductList/types";
 import { Select } from "../Select";
-import { createSelectOptions } from "../ProductList/utils";
-//import { PropsValue } from "react-select";
+import { capitalise, createSelectOptions } from "../ProductList/utils";
 
 
 type EditProductModalContentProps = {
@@ -28,8 +27,9 @@ export const EditProductModalContent = ({
     control,
     resetForm,
     setProductId,
+    submitForm,
+    errors,
   } = useEditProduct(productId);
-
 
   if (error) return (
     <div>
@@ -42,20 +42,29 @@ export const EditProductModalContent = ({
 
   if (isLoading) return <Loading />;
 
-
   const handleCloseModal = () => {
+    console.log('handleCloseModal');
+
     resetForm();
     setProductId(null);
   };
 
   if (product) {
-    const { name, type, id, brand } = product;
+    const { name, brand } = product;
     const { types, features, brands } = productCategoryData;
     const selectedProductType = watch("type");
 
     const sizeOptions = selectedProductType?.value === 'footwear'
       ? createSelectOptions(FOOTWARE_SIZES)
       : createSelectOptions(CLOTHING_SIZES);
+
+    const {
+      name: nameError,
+      type: typeError,
+      sizes: sizesError,
+      features: featuresError,
+      brand: brandError
+    } = errors;
 
     return (
       <>
@@ -70,11 +79,15 @@ export const EditProductModalContent = ({
               placeholder="Product name"
               className="input input-bordered input-accent w-full max-w-xs"
               defaultValue={name}
-              {...register("name")}
+              {...register("name", { required: true })}
+              autoComplete="off"
+              aria-autocomplete="none"
             />
-            {nameValidationError &&
+            {nameValidationError || nameError &&
               <div className="label">
-                <span className="label-text text-red-600">Error: product name must be unique.</span>
+                <span className="label-text text-red-600">
+                  Error: product name must not be left blank and be unique.
+                </span>
               </div>}
           </label>
           <Select
@@ -82,6 +95,7 @@ export const EditProductModalContent = ({
             name="type"
             label="Product Type"
             control={control}
+            error={typeError}
           />
           {selectedProductType &&
             <>
@@ -91,6 +105,7 @@ export const EditProductModalContent = ({
                 label="Available sizes"
                 control={control}
                 isMulti
+                error={sizesError}
               />
               <Select
                 options={features}
@@ -98,25 +113,27 @@ export const EditProductModalContent = ({
                 label="Available features"
                 control={control}
                 isMulti
+                error={featuresError}
               />
               <Select
                 options={brands}
                 name="brand"
                 label="Brand"
-                defaultValue={createSelectOptions([brand])[0]}
+                defaultValue={{ value: brand, label: capitalise(brand) }}
                 control={control}
+                error={brandError}
               />
             </>
           }
-          <div className="flex gap-6 justify-end">
-            <div className="modal-action">
-              <button className="btn btn-accent" onClick={handleCloseModal}>Submit Changes</button>
-            </div>
-            <div className="modal-action">
-              <button className="btn btn-primary" onClick={handleCloseModal}>Close</button>
-            </div>
-          </div>
         </form>
+        <div className="flex gap-6 justify-end">
+          <div className="modal-action">
+            <button className="btn btn-accent" type="submit" onClick={submitForm}>Submit Changes</button>
+          </div>
+          <div className="modal-action">
+            <button className="btn btn-primary" onClick={handleCloseModal}>Close</button>
+          </div>
+        </div>
       </>
     );
   } else {

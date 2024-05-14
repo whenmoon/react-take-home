@@ -1,11 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../api";
 import { Product, ValidationRequestBody } from "../../api/types";
-import { Control, UseFormRegister, UseFormReset, UseFormWatch, useForm } from "react-hook-form";
+import { Control, FieldErrors, UseFormRegister, UseFormReset, UseFormWatch, useForm } from "react-hook-form";
 import { ProductForm } from "./types";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { BaseSyntheticEvent, Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { throttle } from 'lodash';
 import { useModalContext } from "../../context/ModalContext";
+import { parseFormData } from "./utils";
 
 export const useEditProduct = (productId: number | null): {
   product?: Product
@@ -17,6 +18,8 @@ export const useEditProduct = (productId: number | null): {
   control: Control<ProductForm>
   resetForm: UseFormReset<ProductForm>
   setProductId: Dispatch<SetStateAction<number | null>>
+  submitForm: () => (e?: BaseSyntheticEvent | undefined) => Promise<void>
+  errors: FieldErrors<ProductForm>
 } => {
   const { data: product, isFetching, isLoading, error } = useQuery({
     queryKey: ['product', productId],
@@ -34,24 +37,29 @@ export const useEditProduct = (productId: number | null): {
     watch,
     control,
     reset,
-    //getValues
+    getValues,
+    handleSubmit,
+    formState: { errors }
   } = useForm<ProductForm>();
 
   useEffect(() => {
-    //console.log('formState', getValues());
-  }, [watch()]);
+    if (watch('type')?.value) {
+      // Reset sizes when the product type changes
+      reset({ ...getValues(), sizes: [] });
+    }
+  }, [watch('type')?.value]);
 
-  const currentProductName = watch('name')?.value;
-
-  const mutation = useMutation({
+  const validationMutation = useMutation({
     mutationFn: (data: ValidationRequestBody) => api.products.validateProductName(data),
   });
 
   const throttledMutation = throttle((data: ValidationRequestBody): void => {
-    mutation.mutate(data);
+    validationMutation.mutate(data);
   }, 500);
 
   const throttledMutationRef = useRef(throttledMutation);
+
+  const currentProductName = watch('name')?.value;
 
   useEffect(() => {
     if (productId && currentProductName) {
@@ -61,15 +69,40 @@ export const useEditProduct = (productId: number | null): {
 
   const { setProductId } = useModalContext();
 
+  const { mutateAsync: updateProduct } = useMutation({
+    mutationFn: (data: Product) => api.products.updateProduct(data),
+  });
+
+  const onSubmit = async (data: ProductForm): Promise<void> => {
+    console.log('onSubmit', data, productId);
+    if (productId) {
+
+    }
+
+    if (productId) {
+      // Use the data along with the productId to update the product
+      //await updateProduct(parseFormData(data, productId));
+    } else {
+      // Or handle product creation
+      //await mutation.mutateAsync(data);
+    }
+  };
+
+  const submitForm: () => (
+    //@ts-expect-error - fix type
+    e?: BaseSyntheticEvent | undefined) => Promise<void> = () => handleSubmit(onSubmit)();
+
   return {
     product,
     isLoading: isLoading || isFetching,
     error,
     register,
     watch,
-    nameValidationError: mutation.isError,
+    nameValidationError: validationMutation.isError,
     control,
     resetForm: reset,
-    setProductId
+    setProductId,
+    submitForm,
+    errors
   };
 };
