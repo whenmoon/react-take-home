@@ -32,5 +32,5 @@ https://github.com/whenmoon/react-take-home/assets/33122888/3453a4d1-0c18-4081-a
 ### Responsive Form:
 https://github.com/whenmoon/react-take-home/assets/33122888/d882b72a-560c-4821-bb22-d9e6824336ca
 
-### Add Product And Client-side Validation:
+### Add Product And Client-side Form Validation:
 https://github.com/whenmoon/react-take-home/assets/33122888/fc2b9481-4386-46d7-82a4-b27087f439eb
