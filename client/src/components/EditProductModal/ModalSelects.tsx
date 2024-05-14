@@ -41,6 +41,11 @@ export const ModalSelects = ({
     ? createSelectOptions(FOOTWARE_SIZES)
     : createSelectOptions(CLOTHING_SIZES);
 
+  const showStyles = selectedProductType?.value === 'footwear' && styles && style;
+  const showMaterials = selectedProductType?.value === 'outerwear' && materials && material;
+  const showColors = selectedProductType?.value === 'dress' && colors && color;
+  const showNecklines = selectedProductType?.value === 'top' && necklines && neckline;
+  console.log('styles', styles);
 
   return (
     <>
@@ -53,6 +58,54 @@ export const ModalSelects = ({
       />
       {selectedProductType &&
         <>
+          <Select
+            options={brands}
+            name="brand"
+            label="Brand"
+            defaultValue={{ value: brand, label: capitalise(brand) }}
+            control={control}
+            error={brandError}
+          />
+          {showStyles &&
+            <Select
+              options={styles}
+              name="style"
+              label="Style"
+              defaultValue={{ value: style, label: capitalise(style) }}
+              control={control}
+              error={styleError}
+            />
+          }
+          {showMaterials &&
+            <Select
+              options={materials}
+              name="material"
+              label="Material"
+              defaultValue={{ value: material, label: capitalise(material) }}
+              control={control}
+              error={materialsError}
+            />
+          }
+          {showColors &&
+            <Select
+              options={colors}
+              name="color"
+              label="Color"
+              defaultValue={{ value: color, label: capitalise(color) }}
+              control={control}
+              error={colorsError}
+            />
+          }
+          {showNecklines &&
+            <Select
+              options={necklines}
+              name="neckline"
+              label="NeckLine"
+              defaultValue={{ value: neckline, label: capitalise(neckline) }}
+              control={control}
+              error={necklinesError}
+            />
+          }
           <Select
             options={sizeOptions}
             name="sizes"
@@ -69,54 +122,6 @@ export const ModalSelects = ({
             isMulti
             error={featuresError}
           />
-          <Select
-            options={brands}
-            name="brand"
-            label="Brand"
-            defaultValue={{ value: brand, label: capitalise(brand) }}
-            control={control}
-            error={brandError}
-          />
-          {selectedProductType.value === 'footwear' && styles && style &&
-            <Select
-              options={styles}
-              name="style"
-              label="Style"
-              defaultValue={{ value: style, label: capitalise(style) }}
-              control={control}
-              error={styleError}
-            />
-          }
-          {selectedProductType.value === 'outerwear' && materials && material &&
-            <Select
-              options={materials}
-              name="material"
-              label="Material"
-              defaultValue={{ value: material, label: capitalise(material) }}
-              control={control}
-              error={materialsError}
-            />
-          }
-          {selectedProductType.value === 'dress' && colors && color &&
-            <Select
-              options={colors}
-              name="color"
-              label="Color"
-              defaultValue={{ value: color, label: capitalise(color) }}
-              control={control}
-              error={colorsError}
-            />
-          }
-          {selectedProductType.value === 'top' && necklines && neckline &&
-            <Select
-              options={necklines}
-              name="neckline"
-              label="NeckLine"
-              defaultValue={{ value: neckline, label: capitalise(neckline) }}
-              control={control}
-              error={necklinesError}
-            />
-          }
         </>
       }
     </>

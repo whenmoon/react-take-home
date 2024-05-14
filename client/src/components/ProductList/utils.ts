@@ -1,5 +1,5 @@
 import { Product } from "../../api/types";
-import { CategoriesProduct, ProductCategoryData, SelectOption } from "./types";
+import { ProductCategoryData, SelectOption } from "./types";
 
 export const capitalise = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -8,14 +8,14 @@ export const createSelectOptions = (data: string[]): SelectOption[] => {
 };
 
 export const getUniqueProductCategoryData = (products: Product[]): ProductCategoryData => {
-  const productCategoryData: CategoriesProduct = {
+  const productCategoryData = {
     types: new Set<string>(),
     features: new Set<string>(),
     brands: new Set<string>(),
-    styles: null,
-    materials: null,
-    colors: null,
-    necklines: null,
+    styles: new Set<string>(),
+    materials: new Set<string>(),
+    colors: new Set<string>(),
+    necklines: new Set<string>(),
   };
   products.forEach((product) => {
     productCategoryData['types']?.add(product.type);
@@ -23,10 +23,10 @@ export const getUniqueProductCategoryData = (products: Product[]): ProductCatego
       productCategoryData['features']?.add(feature);
     });
     productCategoryData['brands']?.add(product.brand);
-    if (product.style) productCategoryData['styles'] = new Set<string>().add(product.style);
-    if (product.material) productCategoryData['materials'] = new Set<string>().add(product.material);
-    if (product.color) productCategoryData['colors'] = new Set<string>().add(product.color);
-    if (product.neckline) productCategoryData['necklines'] = new Set<string>().add(product.neckline);
+    if (product.style) productCategoryData['styles'].add(product.style);
+    if (product.material) productCategoryData['materials'].add(product.material);
+    if (product.color) productCategoryData['colors'].add(product.color);
+    if (product.neckline) productCategoryData['necklines'].add(product.neckline);
   });
   return {
     types: createSelectOptions(Array.from(productCategoryData.types)),
