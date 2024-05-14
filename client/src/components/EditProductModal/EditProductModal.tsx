@@ -3,7 +3,7 @@ import { EditProductModalContent } from "../EditProductModalContent";
 import { useModalContext } from "../../context/ModalContext";
 import { ProductCategoryData, SetProductUpdateSuccess } from "../ProductList/types";
 import ReactModal from 'react-modal';
-import { modalStyles } from "../EditProductModalContent/styles";
+import { modalStyles } from "./styles";
 
 type EditProductModalProps = {
   productCategoryData?: ProductCategoryData;

@@ -77,29 +77,35 @@ export const EditProductModalContent = ({
 
     return (
       <>
-        <form>
-          <h3
-            className="font-bold text-1xl md:text-2xl lg:text-3xl xl:text-4xl">
-            {`${newProduct ? 'Add' : 'Edit'} Product Information`}
-          </h3>
-          <TextInput name={name} nameValidationError={nameValidationError} nameError={nameError} register={register} />
-          <ModalSelects
-            product={product}
-            productCategoryData={productCategoryData}
-            inputValidationErrors={inputValidationErrors}
-            selectedProductType={selectedProductType}
-            control={control}
-          />
-        </form>
-        <div className="flex gap-6 justify-end">
-          <div className="modal-action">
-            <button
-              className={`btn btn-accent ${responsiveButtonText}`} type="submit" onClick={submitForm}>
-              Submit Changes
-            </button>
-          </div>
-          <div className="modal-action">
-            <button className={`btn btn-primary ${responsiveButtonText}`} onClick={handleCloseModal}>Close</button>
+        <div className="flex flex-col">
+          <form>
+            <h3
+              className="font-bold text-1xl md:text-2xl lg:text-3xl xl:text-4xl">
+              {`${newProduct ? 'Add' : 'Edit'} Product Information`}
+            </h3>
+            <TextInput
+              name={name}
+              nameValidationError={nameValidationError}
+              nameError={nameError}
+              register={register} />
+            <ModalSelects
+              product={product}
+              productCategoryData={productCategoryData}
+              inputValidationErrors={inputValidationErrors}
+              selectedProductType={selectedProductType}
+              control={control}
+            />
+          </form>
+          <div className="flex flex-col justify-end bottom-5 right-5 md:absolute">
+            <div className="modal-action">
+              <button className={`btn btn-primary ${responsiveButtonText}`} onClick={handleCloseModal}>Close</button>
+            </div>
+            <div className="modal-action">
+              <button
+                className={`btn btn-accent ${responsiveButtonText}`} type="submit" onClick={submitForm}>
+                Submit Changes
+              </button>
+            </div>
           </div>
         </div>
       </>
