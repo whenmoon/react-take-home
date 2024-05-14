@@ -2,7 +2,7 @@
 
 ## Installation Instructions
 To run client and server locally follows these step to get it up and running:
-- In the terminal, clone the repository using the command `https://github.com/whenmoon/react-take-home.git`
+- In the terminal, clone the repository using the command `git clone https://github.com/whenmoon/react-take-home.git`
 - Change directory to the cloned repository using by running `cd react-take-home`
 - Install the server and client dependencies: ` npm i && cd client && npm i`
 - While in the client directory, you can run the tests with the command  `npm run test`
