@@ -7,7 +7,7 @@ export const createSelectOptions = (data: string[]): SelectOption[] => {
   return data.map((item) => ({ value: item, label: capitalise(item) }));
 };
 
-const features: FeaturesLists = {
+const productFeatures: FeaturesLists = {
   footwear: new Set<string>(),
   activewear: new Set<string>(),
   outerwear: new Set<string>(),
@@ -17,13 +17,16 @@ const features: FeaturesLists = {
 
 const productCategoryData = {
   types: new Set<string>(),
-  features,
+  features: productFeatures,
   brands: new Set<string>(),
   styles: new Set<string>(),
   materials: new Set<string>(),
   colors: new Set<string>(),
   necklines: new Set<string>(),
 };
+
+const getSelectOptions = (data: Set<string>): SelectOption[] =>
+  createSelectOptions(Array.from(data));
 
 export const getUniqueProductCategoryData = (products: Product[]): ProductCategoryData => {
   products.forEach((product) => {
@@ -37,17 +40,18 @@ export const getUniqueProductCategoryData = (products: Product[]): ProductCatego
     if (product.colour) productCategoryData['colors']?.add(product.colour);
     if (product.neckline) productCategoryData['necklines']?.add(product.neckline);
   });
+  const { types, features, brands, styles, materials, colors, necklines } = productCategoryData;
   return {
-    types: createSelectOptions(Array.from(productCategoryData.types)),
+    types: getSelectOptions(types),
     features: Object.keys(productCategoryData.features).reduce((acc, key) => {
-      acc[key as keyof typeof features] =
-        createSelectOptions(Array.from(productCategoryData.features[key as keyof typeof features]));
+      acc[key as keyof typeof productFeatures] =
+        getSelectOptions(features[key as keyof typeof productFeatures]);
       return acc;
     }, {} as FeatureOptions),
-    brands: createSelectOptions(Array.from(productCategoryData.brands)),
-    styles: productCategoryData.styles ? createSelectOptions(Array.from(productCategoryData.styles)) : null,
-    materials: productCategoryData.materials ? createSelectOptions(Array.from(productCategoryData.materials)) : null,
-    colors: productCategoryData.colors ? createSelectOptions(Array.from(productCategoryData.colors)) : null,
-    necklines: productCategoryData.necklines ? createSelectOptions(Array.from(productCategoryData.necklines)) : null,
+    brands: getSelectOptions(brands),
+    styles: styles ? getSelectOptions(styles) : null,
+    materials: materials ? getSelectOptions(materials) : null,
+    colors: colors ? getSelectOptions(colors) : null,
+    necklines: necklines ? getSelectOptions(necklines) : null,
   };
 };
