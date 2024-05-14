@@ -20,7 +20,7 @@ export const EditProductModalContent = ({
   const {
     product,
     isLoading,
-    error,
+    productQueryError,
     register,
     watch,
     nameValidationError,
@@ -28,17 +28,20 @@ export const EditProductModalContent = ({
     resetForm,
     setProductId,
     submitForm,
-    errors,
+    inputValidationErrors,
+    formSubmitionError,
   } = useEditProduct(productId);
 
-  if (error) return (
-    <div>
-      <ErrorAlert error={error} />
-      <form method="dialog">
-        <button className="btn ">Close</button>
-      </form>
-    </div>
-  );
+  if (productQueryError || formSubmitionError) {
+    return (
+      <div>
+        <ErrorAlert error={productQueryError || formSubmitionError} />
+        <form method="dialog">
+          <button className="btn ">Close</button>
+        </form>
+      </div>
+    );
+  }
 
   if (isLoading) return <Loading />;
 
@@ -64,7 +67,7 @@ export const EditProductModalContent = ({
       sizes: sizesError,
       features: featuresError,
       brand: brandError
-    } = errors;
+    } = inputValidationErrors;
 
     return (
       <>

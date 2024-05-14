@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 
 type ErrorAlertProps = {
-  error?: Error;
+  error?: Error | null;
 }
 
 export const ErrorAlert = ({ error }: ErrorAlertProps): ReactElement => {
