@@ -9,7 +9,7 @@ type ProductListItemProps = {
 };
 
 export const ProductListItem = ({ product }: ProductListItemProps): ReactElement => {
-  const { name, type, brand, sizes, features, colour, style, materials, neckline, id } = product;
+  const { name, type, brand, sizes, features, color, style, material, neckline, id } = product;
 
   const availableSizes = parseProductSpecifications(sizes);
   const productFeatures = parseProductSpecifications(features);
@@ -29,9 +29,9 @@ export const ProductListItem = ({ product }: ProductListItemProps): ReactElement
           <ProductItemLabel label={brand} capitalize bold />
           <ProductItemLabel label={`Features: ${productFeatures}`} />
           <ProductItemLabel label={`Available Sizes: ${availableSizes}`} />
-          {colour && <ProductItemLabel label={`Color: ${colour}`} />}
+          {color && <ProductItemLabel label={`Color: ${color}`} />}
           {style && <ProductItemLabel label={`Style: ${style}`} />}
-          {materials && <ProductItemLabel label={`Materials: ${materials}`} />}
+          {material && <ProductItemLabel label={`Materials: ${material}`} />}
           {neckline && <ProductItemLabel label={`Neckline: ${neckline}`} />}
           <div className="stat-actions flex">
             <button className="btn btn-md btn-accent" onClick={handleEditProduct}>Edit Product</button>

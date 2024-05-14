@@ -2,10 +2,8 @@ import React, { ReactElement } from "react";
 import { useEditProduct } from "../EditProductModal/hooks";
 import { Alert } from "../Alert";
 import { Loading } from "../Loading";
-import { CLOTHING_SIZES, FOOTWARE_SIZES } from "../../constants";
 import { ProductCategoryData, SetProductUpdateSuccess } from "../ProductList/types";
-import { Select } from "../Select";
-import { capitalise, createSelectOptions } from "../ProductList/utils";
+import { ModalSelects } from "../EditProductModal/ModalSelects";
 
 
 type EditProductModalContentProps = {
@@ -57,21 +55,11 @@ export const EditProductModalContent = ({
   };
 
   if (product) {
-    const { name, brand } = product;
-    const { types, features, brands } = productCategoryData;
+    const { name } = product;
+
     const selectedProductType = watch("type");
 
-    const sizeOptions = selectedProductType?.value === 'footwear'
-      ? createSelectOptions(FOOTWARE_SIZES)
-      : createSelectOptions(CLOTHING_SIZES);
-
-    const {
-      name: nameError,
-      type: typeError,
-      sizes: sizesError,
-      features: featuresError,
-      brand: brandError
-    } = inputValidationErrors;
+    const { name: nameError } = inputValidationErrors;
 
     return (
       <>
@@ -97,41 +85,13 @@ export const EditProductModalContent = ({
                 </span>
               </div>}
           </label>
-          <Select
-            options={types}
-            name="type"
-            label="Product Type"
+          <ModalSelects
+            product={product}
+            productCategoryData={productCategoryData}
+            inputValidationErrors={inputValidationErrors}
+            selectedProductType={selectedProductType}
             control={control}
-            error={typeError}
           />
-          {selectedProductType &&
-            <>
-              <Select
-                options={sizeOptions}
-                name="sizes"
-                label="Available sizes"
-                control={control}
-                isMulti
-                error={sizesError}
-              />
-              <Select
-                options={features}
-                name="features"
-                label="Available features"
-                control={control}
-                isMulti
-                error={featuresError}
-              />
-              <Select
-                options={brands}
-                name="brand"
-                label="Brand"
-                defaultValue={{ value: brand, label: capitalise(brand) }}
-                control={control}
-                error={brandError}
-              />
-            </>
-          }
         </form>
         <div className="flex gap-6 justify-end">
           <div className="modal-action">

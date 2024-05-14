@@ -6,4 +6,8 @@ export type ProductForm = {
   sizes: SelectOption[]
   features: SelectOption[]
   brand: SelectOption
+  style?: SelectOption
+  material?: SelectOption
+  color?: SelectOption
+  neckline?: SelectOption
 }

@@ -76,10 +76,18 @@ export const useEditProduct = (productId: number | null, setProductUpdateSuccess
 
   const onSubmit = async (data: ProductForm): Promise<void> => {
     if (product && productId) {
-      const updatedProduct = { ...product, ...parseFormData(data, productId) };
-      await updateProduct(updatedProduct);
-      setProductId(null);
-      setProductUpdateSuccess({ message: `Product id ${productId} updated successfully` });
+      try {
+        const updatedProduct = { ...product, ...parseFormData(data, productId) };
+        console.log('product', product);
+
+        await updateProduct(updatedProduct);
+        setProductId(null);
+        setProductUpdateSuccess({ message: `Product id ${productId} updated successfully` });
+      } catch (error: unknown) {
+        //if (error instanceof Error) {
+        throw new Error(JSON.stringify(error) || "Failed to update product. Please try again.");
+        //}
+      }
     } else {
       //await mutation.mutateAsync(data);
     }
