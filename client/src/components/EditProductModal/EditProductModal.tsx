@@ -1,14 +1,18 @@
 import React, { ReactElement } from "react";
 import { EditProductModalContent } from "../EditProductModalContent";
 import { useModalContext } from "../../context/ModalContext";
-import { ProductCategoryData } from "../ProductList/types";
+import { ProductCategoryData, SetProductUpdateSuccess } from "../ProductList/types";
 import ReactModal from 'react-modal';
 
 type EditProductModalProps = {
   productCategoryData: ProductCategoryData;
+  setProductUpdateSuccess: SetProductUpdateSuccess
 };
 
-export const EditProductModal = ({ productCategoryData }: EditProductModalProps): ReactElement => {
+export const EditProductModal = ({
+  productCategoryData,
+  setProductUpdateSuccess
+}: EditProductModalProps): ReactElement => {
   const { productId } = useModalContext();
 
   return (
@@ -26,7 +30,11 @@ export const EditProductModal = ({ productCategoryData }: EditProductModalProps)
         }
       }}
     >
-      <EditProductModalContent productId={productId} productCategoryData={productCategoryData} />
+      <EditProductModalContent
+        productId={productId}
+        productCategoryData={productCategoryData}
+        setProductUpdateSuccess={setProductUpdateSuccess}
+      />
     </ReactModal>
   );
 };

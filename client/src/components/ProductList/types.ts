@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type SelectOption = { value: string; label: string }
 
 export type ProductCategoryData = {
@@ -5,3 +7,9 @@ export type ProductCategoryData = {
   features: SelectOption[];
   brands: SelectOption[];
 };
+
+export type ProductUpdateSuccess = {
+  message: string;
+} | null;
+
+export type SetProductUpdateSuccess = Dispatch<SetStateAction<ProductUpdateSuccess>>;

@@ -1,9 +1,9 @@
 import React, { ReactElement } from "react";
 import { useEditProduct } from "../EditProductModal/hooks";
-import { ErrorAlert } from "../ErrorAlert";
+import { Alert } from "../Alert";
 import { Loading } from "../Loading";
 import { CLOTHING_SIZES, FOOTWARE_SIZES } from "../../constants";
-import { ProductCategoryData } from "../ProductList/types";
+import { ProductCategoryData, SetProductUpdateSuccess } from "../ProductList/types";
 import { Select } from "../Select";
 import { capitalise, createSelectOptions } from "../ProductList/utils";
 
@@ -11,11 +11,13 @@ import { capitalise, createSelectOptions } from "../ProductList/utils";
 type EditProductModalContentProps = {
   productId: number | null;
   productCategoryData: ProductCategoryData;
+  setProductUpdateSuccess: SetProductUpdateSuccess
 };
 
 export const EditProductModalContent = ({
   productId,
   productCategoryData,
+  setProductUpdateSuccess
 }: EditProductModalContentProps): ReactElement => {
   const {
     product,
@@ -29,13 +31,16 @@ export const EditProductModalContent = ({
     setProductId,
     submitForm,
     inputValidationErrors,
-    formSubmitionError,
-  } = useEditProduct(productId);
+    formSubmitionError
+  } = useEditProduct(productId, setProductUpdateSuccess);
 
   if (productQueryError || formSubmitionError) {
     return (
       <div>
-        <ErrorAlert error={productQueryError || formSubmitionError} />
+        <Alert
+          message={productQueryError?.message || formSubmitionError?.message}
+          type="error"
+        />
         <form method="dialog">
           <button className="btn ">Close</button>
         </form>
@@ -47,7 +52,6 @@ export const EditProductModalContent = ({
 
   const handleCloseModal = () => {
     console.log('handleCloseModal');
-
     resetForm();
     setProductId(null);
   };

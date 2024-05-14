@@ -7,8 +7,9 @@ import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { throttle } from 'lodash';
 import { useModalContext } from "../../context/ModalContext";
 import { parseFormData } from "./utils";
+import { SetProductUpdateSuccess } from "../ProductList/types";
 
-export const useEditProduct = (productId: number | null): {
+export const useEditProduct = (productId: number | null, setProductUpdateSuccess: SetProductUpdateSuccess): {
   product?: Product
   isLoading: boolean;
   productQueryError: Error | null;
@@ -77,6 +78,8 @@ export const useEditProduct = (productId: number | null): {
     if (product && productId) {
       const updatedProduct = { ...product, ...parseFormData(data, productId) };
       await updateProduct(updatedProduct);
+      setProductId(null);
+      setProductUpdateSuccess({ message: `Product id ${productId} updated successfully` });
     } else {
       //await mutation.mutateAsync(data);
     }

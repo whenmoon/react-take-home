@@ -2,32 +2,39 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "../../api";
 import { Product } from "../../api/types";
 import { getUniqueProductCategoryData } from "./utils";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import { ProductCategoryData } from "./types";
+import { useEffect, useMemo, useState } from "react";
+import { ProductCategoryData, ProductUpdateSuccess, SetProductUpdateSuccess } from "./types";
 
 export const useProducts = (): {
   products: Product[] | undefined;
   isLoading: boolean;
   error: Error | null;
   productCategoryData: ProductCategoryData;
-  //editProdcutId: number | null;
-  //setEditProductId: Dispatch<SetStateAction<number | null>>
+  setProductUpdateSuccess: SetProductUpdateSuccess;
+  productUpdateSuccess: ProductUpdateSuccess
 } => {
   const { data: products, isFetching, isLoading, error } = useQuery({
     queryKey: ['products'],
     queryFn: () => api.products.getProducts(),
   });
 
-  const productCategoryData = useMemo(() => getUniqueProductCategoryData(products || []), [products]);
+  const [productUpdateSuccess, setProductUpdateSuccess] = useState<{ message: string } | null>(null);
 
-  //const [editProdcutId, setEditProductId] = useState<number | null>(null);
+  useEffect(() => {
+    const timer1 = setTimeout(() => setProductUpdateSuccess(null), 5 * 1000);
+    return () => {
+      clearTimeout(timer1);
+    };
+  }, [productUpdateSuccess]);
+
+  const productCategoryData = useMemo(() => getUniqueProductCategoryData(products || []), [products]);
 
   return {
     products,
     isLoading: isLoading || isFetching,
     error,
     productCategoryData,
-    //editProdcutId,
-    //setEditProductId
+    setProductUpdateSuccess,
+    productUpdateSuccess,
   };
 };
