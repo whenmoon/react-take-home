@@ -1,5 +1,5 @@
 import { Control, FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
-import { ProductForm } from "../EditProductModal/types";
+import { ProductForm } from "../EditProductModalContent/types";
 import { SelectOption } from "../ProductList/types";
 
 export type SelectProps = {

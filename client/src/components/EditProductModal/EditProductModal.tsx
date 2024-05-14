@@ -3,6 +3,7 @@ import { EditProductModalContent } from "../EditProductModalContent";
 import { useModalContext } from "../../context/ModalContext";
 import { ProductCategoryData, SetProductUpdateSuccess } from "../ProductList/types";
 import ReactModal from 'react-modal';
+import { modalStyles } from "../EditProductModalContent/styles";
 
 type EditProductModalProps = {
   productCategoryData?: ProductCategoryData;
@@ -19,16 +20,7 @@ export const EditProductModal = ({
     <ReactModal
       isOpen={!!productId || newProduct}
       ariaHideApp={false}
-      style={{
-        overlay: {
-          width: '75%',
-          height: '75%',
-          opacity: 0.95,
-          position: 'absolute',
-          top: '10%',
-          left: '12.5%',
-        }
-      }}
+      style={modalStyles}
     >
       <EditProductModalContent
         productId={productId}

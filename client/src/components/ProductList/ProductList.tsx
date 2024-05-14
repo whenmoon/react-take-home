@@ -27,7 +27,7 @@ export const ProductList = (): ReactElement => {
           <div className="flex justify-between pr-4">
             <div className="prose pl-4 self-end mb-4">
               <h1
-                className="leading-[0px] text-2xl md:text-3xl lg:text-4xl xl:text-5xl">{`Products (${products.length})`}
+                className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl">{`Products (${products.length})`}
               </h1>
             </div>
             <button

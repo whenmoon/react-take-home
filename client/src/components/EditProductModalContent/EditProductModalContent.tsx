@@ -1,10 +1,12 @@
 import React, { ReactElement } from "react";
-import { useEditProduct } from "../EditProductModal/hooks";
+import { useEditProduct } from "./hooks";
 import { Alert } from "../Alert";
 import { Loading } from "../Loading";
 import { ProductCategoryData, SetProductUpdateSuccess } from "../ProductList/types";
-import { ModalSelects } from "../EditProductModal/ModalSelects";
+import { ModalSelects } from "./ModalSelects";
 import { TextInput } from "../TextInput";
+
+const responsiveButtonText = "text-base md:text-lg lg:text-xl xl:text-2xl";
 
 type EditProductModalContentProps = {
   productId?: number;
@@ -76,7 +78,10 @@ export const EditProductModalContent = ({
     return (
       <>
         <form>
-          <h3 className="font-bold text-lg" >{`${newProduct ? 'Add' : 'Edit'} Product Information`}</h3>
+          <h3
+            className="font-bold text-1xl md:text-2xl lg:text-3xl xl:text-4xl">
+            {`${newProduct ? 'Add' : 'Edit'} Product Information`}
+          </h3>
           <TextInput name={name} nameValidationError={nameValidationError} nameError={nameError} register={register} />
           <ModalSelects
             product={product}
@@ -88,10 +93,13 @@ export const EditProductModalContent = ({
         </form>
         <div className="flex gap-6 justify-end">
           <div className="modal-action">
-            <button className="btn btn-accent" type="submit" onClick={submitForm}>Submit Changes</button>
+            <button
+              className={`btn btn-accent ${responsiveButtonText}`} type="submit" onClick={submitForm}>
+              Submit Changes
+            </button>
           </div>
           <div className="modal-action">
-            <button className="btn btn-primary" onClick={handleCloseModal}>Close</button>
+            <button className={`btn btn-primary ${responsiveButtonText}`} onClick={handleCloseModal}>Close</button>
           </div>
         </div>
       </>

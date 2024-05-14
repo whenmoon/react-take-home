@@ -15,7 +15,7 @@ export const Select = (
       return (
         <label className="form-control w-full max-w-xs mt-4">
           <div className="label">
-            <span className="label-text">{label}</span>
+            <span className="label-text text-base md:text-lg lg:text-xl xl:text-2xl">{label}</span>
           </div>
           <ReactSelect
             options={options}

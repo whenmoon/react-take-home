@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { FieldError, UseFormRegister } from "react-hook-form";
-import { ProductForm } from "../EditProductModal/types";
+import { ProductForm } from "../EditProductModalContent/types";
 
 type TextInputProps = {
   name: string;
@@ -12,7 +12,7 @@ type TextInputProps = {
 export const TextInput = ({ name, nameValidationError, nameError, register }: TextInputProps): ReactElement => (
   <label className="form-control w-full max-w-xs">
     <div className="label mt-4">
-      <span className="label-text">Product name</span>
+      <span className="label-text text-base md:text-lg lg:text-xl xl:text-2xl">Product name</span>
     </div>
     <input
       type="text"
