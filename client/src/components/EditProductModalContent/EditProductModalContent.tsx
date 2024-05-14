@@ -4,6 +4,7 @@ import { Alert } from "../Alert";
 import { Loading } from "../Loading";
 import { ProductCategoryData, SetProductUpdateSuccess } from "../ProductList/types";
 import { ModalSelects } from "../EditProductModal/ModalSelects";
+import { TextInput } from "../TextInput";
 
 type EditProductModalContentProps = {
   productId?: number;
@@ -72,26 +73,7 @@ export const EditProductModalContent = ({
       <>
         <form>
           <h3 className="font-bold text-lg" >{`${newProduct ? 'Add' : 'Edit'} Product Information`}</h3>
-          <label className="form-control w-full max-w-xs">
-            <div className="label mt-4">
-              <span className="label-text">Product name</span>
-            </div>
-            <input
-              type="text"
-              placeholder="Product name"
-              className="input input-bordered input-accent w-full max-w-xs"
-              defaultValue={name}
-              {...register("name", { required: true })}
-              autoComplete="off"
-              aria-autocomplete="none"
-            />
-            {(nameValidationError || nameError) &&
-              <div className="label">
-                <span className="label-text text-red-600">
-                  Error: product name must not be left blank and it must be unique.
-                </span>
-              </div>}
-          </label>
+          <TextInput name={name} nameValidationError={nameValidationError} nameError={nameError} register={register} />
           <ModalSelects
             product={product}
             productCategoryData={productCategoryData}

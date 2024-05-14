@@ -9,7 +9,7 @@ import { useModalContext } from "../../context/ModalContext";
 import { parseFormData } from "./utils";
 import { SetProductUpdateSuccess } from "../ProductList/types";
 
-const useThrotteldMutation = (
+const useThrottledNameValidation = (
   data: ValidationRequestBody,
   watch: UseFormWatch<ProductForm>,
   newProduct: boolean,
@@ -86,7 +86,7 @@ export const useEditProduct = (
     }
   }, [watch('type')?.value]);
 
-  const nameValidationError = useThrotteldMutation(
+  const nameValidationError = useThrottledNameValidation(
     { id: productId, name: watch('name') },
     watch,
     newProduct,

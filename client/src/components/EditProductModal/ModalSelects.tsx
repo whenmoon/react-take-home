@@ -5,7 +5,7 @@ import { Product } from '../../api/types';
 import { ProductForm } from './types';
 import { Control, FieldErrors } from 'react-hook-form';
 import { CLOTHING_SIZES, FOOTWARE_SIZES } from '../../constants';
-import { capitalise, createSelectOptions } from '../ProductList/utils';
+import { createSelectOptions } from '../ProductList/utils';
 import { getDefaultSelectValue } from './utils';
 
 type ModalSelectsProps = {
