@@ -1,12 +1,12 @@
 # react-take-home
 
 ## Installation Instructions
-To run client and server locally follows these step to get it up and running:
+To run the client and server locally, follow these step to get up and running:
 - In the terminal, clone the repository using the command `git clone https://github.com/whenmoon/react-take-home.git`
 - Change directory to the cloned repository using by running `cd react-take-home`
 - Install the server and client dependencies: `npm i && cd client && npm i`
 - While in the client directory, you can run the tests with the command  `npm run test`
-- To start the application, `cd` back to the root of the repository and run `npm run dev`. The client and server should start to run and you can interact with the frontend in the browser by navigating to http://localhost:3000/ 
+- To start the application, `cd` back to the root of the repository and run `npm run dev`. The client and server should start and you can interact with the frontend in the browser by navigating to http://localhost:3000/ 
 
 ## Responsive Design
 The app is suited to all screen sizes and devices. Tailwind utility classes are used to maintain responsiveness, affecting typography and layout.
