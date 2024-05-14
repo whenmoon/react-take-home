@@ -9,7 +9,7 @@ import { useModalContext } from "../../context/ModalContext";
 import { parseFormData } from "./utils";
 import { SetProductUpdateSuccess } from "../ProductList/types";
 
-const useThrottledNameValidation = (
+export const useThrottledNameValidation = (
   data: ValidationRequestBody,
   watch: UseFormWatch<ProductForm>,
   newProduct: boolean,

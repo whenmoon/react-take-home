@@ -49,9 +49,9 @@ export const getUniqueProductCategoryData = (products: Product[]): ProductCatego
       return acc;
     }, {} as FeatureOptions),
     brands: getSelectOptions(brands),
-    styles: styles ? getSelectOptions(styles) : null,
-    materials: materials ? getSelectOptions(materials) : null,
-    colors: colors ? getSelectOptions(colors) : null,
-    necklines: necklines ? getSelectOptions(necklines) : null,
+    styles: styles.size ? getSelectOptions(styles) : null,
+    materials: materials.size ? getSelectOptions(materials) : null,
+    colors: colors.size ? getSelectOptions(colors) : null,
+    necklines: necklines.size ? getSelectOptions(necklines) : null,
   };
 };
