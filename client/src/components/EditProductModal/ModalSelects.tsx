@@ -8,7 +8,7 @@ import { CLOTHING_SIZES, FOOTWARE_SIZES } from '../../constants';
 import { capitalise, createSelectOptions } from '../ProductList/utils';
 
 type ModalSelectsProps = {
-  productCategoryData: ProductCategoryData;
+  productCategoryData?: ProductCategoryData;
   product: Product;
   control: Control<ProductForm>
   inputValidationErrors: FieldErrors<ProductForm>
@@ -23,8 +23,8 @@ export const ModalSelects = ({
   control
 }: ModalSelectsProps) => {
 
-  const { brand, style, color, material, neckline } = product;
-  const { types, features, brands, styles, colors, materials, necklines } = productCategoryData;
+  const { brand, style, colour, materials: productMaterials, neckline } = product;
+  const { types, features, brands, styles, colors, materials, necklines } = productCategoryData || {};
 
   const {
     type: typeError,
@@ -41,16 +41,15 @@ export const ModalSelects = ({
     ? createSelectOptions(FOOTWARE_SIZES)
     : createSelectOptions(CLOTHING_SIZES);
 
-  const showStyles = selectedProductType?.value === 'footwear' && styles && style;
-  const showMaterials = selectedProductType?.value === 'outerwear' && materials && material;
-  const showColors = selectedProductType?.value === 'dress' && colors && color;
-  const showNecklines = selectedProductType?.value === 'top' && necklines && neckline;
-  console.log('styles', styles);
+  const showStyles = selectedProductType?.value === 'footwear' && styles;
+  const showMaterials = selectedProductType?.value === 'outerwear' && materials;
+  const showColors = selectedProductType?.value === 'dress' && colors;
+  const showNecklines = selectedProductType?.value === 'top' && necklines;
 
   return (
     <>
       <Select
-        options={types}
+        options={types || []}
         name="type"
         label="Product Type"
         control={control}
@@ -59,7 +58,7 @@ export const ModalSelects = ({
       {selectedProductType &&
         <>
           <Select
-            options={brands}
+            options={brands || []}
             name="brand"
             label="Brand"
             defaultValue={{ value: brand, label: capitalise(brand) }}
@@ -71,7 +70,7 @@ export const ModalSelects = ({
               options={styles}
               name="style"
               label="Style"
-              defaultValue={{ value: style, label: capitalise(style) }}
+              defaultValue={style ? { value: style, label: capitalise(style) } : undefined}
               control={control}
               error={styleError}
             />
@@ -81,7 +80,9 @@ export const ModalSelects = ({
               options={materials}
               name="material"
               label="Material"
-              defaultValue={{ value: material, label: capitalise(material) }}
+              defaultValue={
+                productMaterials ? { value: productMaterials, label: capitalise(productMaterials) } : undefined
+              }
               control={control}
               error={materialsError}
             />
@@ -91,7 +92,7 @@ export const ModalSelects = ({
               options={colors}
               name="color"
               label="Color"
-              defaultValue={{ value: color, label: capitalise(color) }}
+              defaultValue={colour ? { value: colour, label: capitalise(colour) } : undefined}
               control={control}
               error={colorsError}
             />
@@ -101,7 +102,7 @@ export const ModalSelects = ({
               options={necklines}
               name="neckline"
               label="NeckLine"
-              defaultValue={{ value: neckline, label: capitalise(neckline) }}
+              defaultValue={neckline ? { value: neckline, label: capitalise(neckline) } : undefined}
               control={control}
               error={necklinesError}
             />
@@ -115,7 +116,7 @@ export const ModalSelects = ({
             error={sizesError}
           />
           <Select
-            options={features}
+            options={features?.[selectedProductType.value as keyof typeof features] || []}
             name="features"
             label="Available features"
             control={control}

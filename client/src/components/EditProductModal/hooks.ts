@@ -46,7 +46,11 @@ export const useEditProduct = (productId: number | null, setProductUpdateSuccess
   useEffect(() => {
     if (watch('type')?.value) {
       // Reset sizes when the product type changes
-      reset({ ...getValues(), sizes: [] });
+      reset({
+        ...getValues(),
+        sizes: [],
+        features: []
+      });
     }
   }, [watch('type')?.value]);
 

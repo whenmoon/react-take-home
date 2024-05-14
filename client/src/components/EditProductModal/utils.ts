@@ -11,8 +11,8 @@ export const parseFormData = (formData: ProductForm, productId: number): Product
     sizes: sizes.map((size) => size.value) as ClothingSize[] | FootwareSize[],
     features: features.map(feature => feature.value),
     style: style?.value,
-    color: color?.value,
-    material: material?.value,
+    colour: color?.value,
+    materials: material?.value,
     neckline: neckline?.value
   };
 };

@@ -23,7 +23,9 @@ export const ProductList = (): ReactElement => {
     return (
       <>
         <div className="w-full">
-        {productUpdateSuccess && <Alert message={productUpdateSuccess.message} type="success" />}
+          <div className="relative">
+            {productUpdateSuccess && <Alert message={productUpdateSuccess.message} type="success" />}
+          </div>
           {products.map((product, idx) =>
             <ProductListItem
               key={`${product.id}-${idx}`}

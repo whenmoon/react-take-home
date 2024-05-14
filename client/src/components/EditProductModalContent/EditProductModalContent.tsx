@@ -8,7 +8,7 @@ import { ModalSelects } from "../EditProductModal/ModalSelects";
 
 type EditProductModalContentProps = {
   productId: number | null;
-  productCategoryData: ProductCategoryData;
+  productCategoryData?: ProductCategoryData;
   setProductUpdateSuccess: SetProductUpdateSuccess
 };
 
@@ -49,7 +49,6 @@ export const EditProductModalContent = ({
   if (isLoading) return <Loading />;
 
   const handleCloseModal = () => {
-    console.log('handleCloseModal');
     resetForm();
     setProductId(null);
   };

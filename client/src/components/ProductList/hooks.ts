@@ -9,11 +9,11 @@ export const useProducts = (): {
   products: Product[] | undefined;
   isLoading: boolean;
   error: Error | null;
-  productCategoryData: ProductCategoryData;
+  productCategoryData?: ProductCategoryData;
   setProductUpdateSuccess: SetProductUpdateSuccess;
   productUpdateSuccess: ProductUpdateSuccess
 } => {
-  const { data: products, isFetching, isLoading, error } = useQuery({
+  const { data: products, isFetching, isLoading, error, refetch, isFetched } = useQuery({
     queryKey: ['products'],
     queryFn: () => api.products.getProducts(),
   });
@@ -21,13 +21,20 @@ export const useProducts = (): {
   const [productUpdateSuccess, setProductUpdateSuccess] = useState<{ message: string } | null>(null);
 
   useEffect(() => {
+    if (productUpdateSuccess) refetch();
+
     const timer1 = setTimeout(() => setProductUpdateSuccess(null), 5 * 1000);
     return () => {
       clearTimeout(timer1);
     };
   }, [productUpdateSuccess]);
 
-  const productCategoryData = useMemo(() => getUniqueProductCategoryData(products || []), [products]);
+  // Even though we depend on products, this list should persist so we have all options available
+  // as server options are updated and overwritten. Ideally the server returns all options or config
+  // for the client to use. Create category data once loading is finished
+  const productCategoryData = useMemo(() => {
+    if (isFetched) return getUniqueProductCategoryData(products || []);
+  }, [isFetched]);
 
   return {
     products,

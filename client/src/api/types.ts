@@ -9,9 +9,9 @@ export type Product = {
   sizes: ClothingSize[] | FootwareSize[],
   features: string[],
   brand: string,
-  color?: string,
+  colour?: string,
   style?: string,
-  material?: string,
+  materials?: string,
   neckline?: string,
 }
 

@@ -5,7 +5,7 @@ import { ProductCategoryData, SetProductUpdateSuccess } from "../ProductList/typ
 import ReactModal from 'react-modal';
 
 type EditProductModalProps = {
-  productCategoryData: ProductCategoryData;
+  productCategoryData?: ProductCategoryData;
   setProductUpdateSuccess: SetProductUpdateSuccess
 };
 

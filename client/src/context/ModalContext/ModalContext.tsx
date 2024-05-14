@@ -1,4 +1,4 @@
-import React, { Dispatch, PropsWithChildren, SetStateAction, createContext, useState } from "react";
+import React, { Dispatch, PropsWithChildren, ReactElement, SetStateAction, createContext, useState } from "react";
 
 type ModalContext = {
   productId: number | null;
@@ -9,7 +9,7 @@ const ModalContext = createContext<ModalContext | null>(null);
 
 type ModalContextProviderProps = PropsWithChildren
 
-export const ModalContextProvider = ({ children }: ModalContextProviderProps) => {
+export const ModalContextProvider = ({ children }: ModalContextProviderProps): ReactElement => {
   const [productId, setProductId] = useState<number | null>(null);
 
   return <ModalContext.Provider value={{ productId, setProductId }}>{children}</ModalContext.Provider>;
