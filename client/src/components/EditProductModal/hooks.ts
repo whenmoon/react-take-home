@@ -33,14 +33,13 @@ export const useEditProduct = (productId: number | null): {
 
   const {
     register,
-    //handleSubmit,
     watch,
     control,
     reset,
     getValues,
     handleSubmit,
     formState: { errors }
-  } = useForm<ProductForm>();
+  } = useForm<ProductForm>({ defaultValues: { name: product?.name } });
 
   useEffect(() => {
     if (watch('type')?.value) {
@@ -59,7 +58,7 @@ export const useEditProduct = (productId: number | null): {
 
   const throttledMutationRef = useRef(throttledMutation);
 
-  const currentProductName = watch('name')?.value;
+  const currentProductName = watch('name');
 
   useEffect(() => {
     if (productId && currentProductName) {
@@ -74,16 +73,11 @@ export const useEditProduct = (productId: number | null): {
   });
 
   const onSubmit = async (data: ProductForm): Promise<void> => {
-    console.log('onSubmit', data, productId);
-    if (productId) {
-
-    }
-
-    if (productId) {
-      // Use the data along with the productId to update the product
-      //await updateProduct(parseFormData(data, productId));
+    if (product && productId) {
+      const updatedProduct = { ...product, ...parseFormData(data, productId) };
+      console.log('onSubmit', updatedProduct);
+      await updateProduct(updatedProduct);
     } else {
-      // Or handle product creation
       //await mutation.mutateAsync(data);
     }
   };

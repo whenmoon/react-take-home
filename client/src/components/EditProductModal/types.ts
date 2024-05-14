@@ -1,7 +1,7 @@
 import { SelectOption } from "../ProductList/types";
 
 export type ProductForm = {
-  name: SelectOption
+  name: string
   type: SelectOption
   sizes: SelectOption[]
   features: SelectOption[]
