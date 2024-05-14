@@ -44,8 +44,10 @@ export const useProducts = (): {
     setNewProduct(true);
   };
 
+  const productsNewestFirst = useMemo(() => Array.from(products || []).reverse(), [products]);
+
   return {
-    products,
+    products: products ? productsNewestFirst : undefined,
     isLoading: isLoading || isFetching,
     error,
     productCategoryData,

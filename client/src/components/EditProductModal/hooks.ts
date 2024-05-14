@@ -12,9 +12,10 @@ import { SetProductUpdateSuccess } from "../ProductList/types";
 const useThrotteldMutation = (
   data: ValidationRequestBody,
   watch: UseFormWatch<ProductForm>,
+  newProduct: boolean,
   productId?: number
 ): boolean => {
-  const { mutate: validationMutation, isError: isValidationMutationError } = useMutation({
+  const { mutate: validationMutation, isError: isMutationError } = useMutation({
     mutationFn: (data: ValidationRequestBody) => api.products.validateProductName(data),
   });
 
@@ -27,12 +28,12 @@ const useThrotteldMutation = (
   const currentProductName = watch('name');
 
   useEffect(() => {
-    if (currentProductName) {
+    if (currentProductName && (productId || newProduct)) {
       throttledMutationRef.current({ id: productId, name: currentProductName });
     }
-  }, [productId, currentProductName]);
+  }, [productId, newProduct, currentProductName]);
 
-  return isValidationMutationError;
+  return isMutationError;
 };
 
 export const useEditProduct = (
@@ -85,9 +86,10 @@ export const useEditProduct = (
     }
   }, [watch('type')?.value]);
 
-  const isValidationMutationError = useThrotteldMutation(
+  const nameValidationError = useThrotteldMutation(
     { id: productId, name: watch('name') },
     watch,
+    newProduct,
     productId
   );
 
@@ -115,7 +117,7 @@ export const useEditProduct = (
         setProductUpdateSuccess({ message: `Product id ${id} updated successfully` });
       }
     } catch (error: unknown) {
-      throw new Error(JSON.stringify(error) || "Failed to update product. Please try again.");
+      throw new Error(JSON.stringify(error) || 'Failed to update product. Please try again.');
     } finally {
       reset();
     }
@@ -129,7 +131,7 @@ export const useEditProduct = (
     productQueryError,
     register,
     watch,
-    nameValidationError: isValidationMutationError,
+    nameValidationError,
     control,
     resetForm: reset,
     setProductId,
