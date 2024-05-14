@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../../api";
-import { Product, ValidationRequestBody } from "../../api/types";
+import { Product, ProductWithoutId, ValidationRequestBody } from "../../api/types";
 import { Control, FieldErrors, UseFormRegister, UseFormReset, UseFormWatch, useForm } from "react-hook-form";
 import { ProductForm } from "./types";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
@@ -9,7 +9,11 @@ import { useModalContext } from "../../context/ModalContext";
 import { parseFormData } from "./utils";
 import { SetProductUpdateSuccess } from "../ProductList/types";
 
-export const useEditProduct = (productId: number | null, setProductUpdateSuccess: SetProductUpdateSuccess): {
+export const useEditProduct = (
+  setProductUpdateSuccess: SetProductUpdateSuccess,
+  newProduct: boolean,
+  productId?: number
+): {
   product?: Product
   isLoading: boolean;
   productQueryError: Error | null;
@@ -18,10 +22,11 @@ export const useEditProduct = (productId: number | null, setProductUpdateSuccess
   nameValidationError: boolean | null;
   control: Control<ProductForm>
   resetForm: UseFormReset<ProductForm>
-  setProductId: Dispatch<SetStateAction<number | null>>
+  setProductId: Dispatch<SetStateAction<number | undefined>>
   submitForm: () => Promise<void>
   inputValidationErrors: FieldErrors<ProductForm>
   formSubmitionError: Error | null;
+  setNewProduct: Dispatch<SetStateAction<boolean>>
 } => {
   const { data: product, isFetching, isLoading, error: productQueryError } = useQuery({
     queryKey: ['product', productId],
@@ -45,7 +50,7 @@ export const useEditProduct = (productId: number | null, setProductUpdateSuccess
 
   useEffect(() => {
     if (watch('type')?.value) {
-      // Reset sizes when the product type changes
+      // Reset type dependent options when the product type changes
       reset({
         ...getValues(),
         sizes: [],
@@ -67,33 +72,38 @@ export const useEditProduct = (productId: number | null, setProductUpdateSuccess
   const currentProductName = watch('name');
 
   useEffect(() => {
-    if (productId && currentProductName) {
+    if (currentProductName) {
       throttledMutationRef.current({ id: productId, name: currentProductName });
     }
   }, [productId, currentProductName]);
 
-  const { setProductId } = useModalContext();
+  const { setProductId, setNewProduct } = useModalContext();
 
-  const { mutateAsync: updateProduct, error: formSubmitionError } = useMutation({
+  const { mutateAsync: updateProduct, error: formSubmitionUpdateError } = useMutation({
     mutationFn: (data: Product) => api.products.updateProduct(data),
   });
 
-  const onSubmit = async (data: ProductForm): Promise<void> => {
-    if (product && productId) {
-      try {
-        const updatedProduct = { ...product, ...parseFormData(data, productId) };
-        console.log('product', product);
+  const { mutateAsync: createProduct, error: formSubmitionCreateError } = useMutation({
+    mutationFn: (data: ProductWithoutId) => api.products.addProduct(data),
+  });
 
+  const onSubmit = async (data: ProductForm): Promise<void> => {
+    try {
+      if (product && productId) {
+        const updatedProduct = { ...product, ...parseFormData(data, productId) };
         await updateProduct(updatedProduct);
-        setProductId(null);
+        setProductId(undefined);
         setProductUpdateSuccess({ message: `Product id ${productId} updated successfully` });
-      } catch (error: unknown) {
-        //if (error instanceof Error) {
-        throw new Error(JSON.stringify(error) || "Failed to update product. Please try again.");
-        //}
+      } else if (newProduct) {
+        const createdProduct = await createProduct(parseFormData(data));
+        const { id } = createdProduct;
+        setNewProduct(false);
+        setProductUpdateSuccess({ message: `Product id ${id} updated successfully` });
       }
-    } else {
-      //await mutation.mutateAsync(data);
+    } catch (error: unknown) {
+      throw new Error(JSON.stringify(error) || "Failed to update product. Please try again.");
+    } finally {
+      reset();
     }
   };
 
@@ -111,6 +121,7 @@ export const useEditProduct = (productId: number | null, setProductUpdateSuccess
     setProductId,
     submitForm,
     inputValidationErrors: errors,
-    formSubmitionError,
+    formSubmitionError: formSubmitionUpdateError || formSubmitionCreateError,
+    setNewProduct
   };
 };

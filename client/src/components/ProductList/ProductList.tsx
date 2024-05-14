@@ -13,6 +13,7 @@ export const ProductList = (): ReactElement => {
     productCategoryData,
     productUpdateSuccess,
     setProductUpdateSuccess,
+    handleCreateProduct
   } = useProducts();
 
   if (error) return <Alert message={error?.message} type="error" />;
@@ -23,9 +24,13 @@ export const ProductList = (): ReactElement => {
     return (
       <>
         <div className="w-full">
-          <div className="relative">
-            {productUpdateSuccess && <Alert message={productUpdateSuccess.message} type="success" />}
+          <div className="flex justify-between pr-4">
+            <div className="prose pl-4 self-end mb-4">
+              <h1 className="leading-[0px]">{`Products (${products.length})`}</h1>
+            </div>
+            <button className="btn btn-warning" onClick={handleCreateProduct}>Create Product</button>
           </div>
+          {productUpdateSuccess && <Alert message={productUpdateSuccess.message} type="success" />}
           {products.map((product, idx) =>
             <ProductListItem
               key={`${product.id}-${idx}`}

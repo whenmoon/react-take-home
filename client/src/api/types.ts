@@ -16,6 +16,8 @@ export type Product = {
 }
 
 export type ValidationRequestBody = {
-  id: number,
+  id?: number,
   name: string,
 }
+
+export type ProductWithoutId = Omit<Product, 'id'>;

@@ -5,17 +5,18 @@ import { Loading } from "../Loading";
 import { ProductCategoryData, SetProductUpdateSuccess } from "../ProductList/types";
 import { ModalSelects } from "../EditProductModal/ModalSelects";
 
-
 type EditProductModalContentProps = {
-  productId: number | null;
+  productId?: number;
   productCategoryData?: ProductCategoryData;
   setProductUpdateSuccess: SetProductUpdateSuccess
+  newProduct: boolean;
 };
 
 export const EditProductModalContent = ({
   productId,
   productCategoryData,
-  setProductUpdateSuccess
+  setProductUpdateSuccess,
+  newProduct
 }: EditProductModalContentProps): ReactElement => {
   const {
     product,
@@ -29,32 +30,39 @@ export const EditProductModalContent = ({
     setProductId,
     submitForm,
     inputValidationErrors,
-    formSubmitionError
-  } = useEditProduct(productId, setProductUpdateSuccess);
+    formSubmitionError,
+    setNewProduct
+  } = useEditProduct(setProductUpdateSuccess, newProduct, productId);
+
+  const handleCloseModal = () => {
+    resetForm();
+    if (newProduct) {
+      setNewProduct(false);
+    } else {
+      setProductId(undefined);
+    }
+  };
 
   if (productQueryError || formSubmitionError) {
     return (
-      <div>
-        <Alert
-          message={productQueryError?.message || formSubmitionError?.message}
-          type="error"
-        />
-        <form method="dialog">
-          <button className="btn ">Close</button>
-        </form>
+      <div className="h-full flex justify-center" >
+        <div>
+          <div className="mt-32">
+            <Alert
+              message={productQueryError?.message || formSubmitionError?.message}
+              type="error"
+            />
+          </div>
+          <button className="btn w-max flex m-32" onClick={handleCloseModal}>Close</button>
+        </div>
       </div>
     );
   }
 
   if (isLoading) return <Loading />;
 
-  const handleCloseModal = () => {
-    resetForm();
-    setProductId(null);
-  };
-
-  if (product) {
-    const { name } = product;
+  if (product || newProduct) {
+    const { name } = product || { name: '' };
 
     const selectedProductType = watch("type");
 
@@ -63,7 +71,7 @@ export const EditProductModalContent = ({
     return (
       <>
         <form>
-          <h3 className="font-bold text-lg" >Edit Product Information</h3>
+          <h3 className="font-bold text-lg" >{`${newProduct ? 'Add' : 'Edit'} Product Information`}</h3>
           <label className="form-control w-full max-w-xs">
             <div className="label mt-4">
               <span className="label-text">Product name</span>
@@ -77,10 +85,10 @@ export const EditProductModalContent = ({
               autoComplete="off"
               aria-autocomplete="none"
             />
-            {nameValidationError || nameError &&
+            {(nameValidationError || nameError) &&
               <div className="label">
                 <span className="label-text text-red-600">
-                  Error: product name must not be left blank and be unique.
+                  Error: product name must not be left blank and it must be unique.
                 </span>
               </div>}
           </label>

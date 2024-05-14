@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Product, ValidationRequestBody } from './types';
+import { Product, ProductWithoutId, ValidationRequestBody } from './types';
 import { BASE_API_URL } from '../constants';
-
 
 axios.defaults.baseURL = BASE_API_URL;
 
@@ -29,20 +28,20 @@ axios.interceptors.response.use(
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const request = {
-  get: <T>(url: string, config?: AxiosRequestConfig) =>
-    axios.get<T>(url, config).then(responseBody),
-  post: <T>(url: string, data?: T, config?: AxiosRequestConfig) =>
-    axios.post<T>(url, data, config).then(responseBody),
-  put: <T>(url: string, data?: T, config?: AxiosRequestConfig) =>
-    axios.put<T>(url, data, config).then(responseBody),
+  get: <R>(url: string, config?: AxiosRequestConfig) =>
+    axios.get<R>(url, config).then(responseBody),
+  post: <D, R>(url: string, data?: D, config?: AxiosRequestConfig) =>
+    axios.post<R>(url, data, config).then(responseBody),
+  put: <D, R>(url: string, data?: D, config?: AxiosRequestConfig) =>
+    axios.put<R>(url, data, config).then(responseBody),
 };
 
 const products = {
   getProducts: () => request.get<Product[]>('/products'),
   getProduct: (id: number) => request.get<Product>(`/products/${id}`),
-  validateProductName: (data: ValidationRequestBody) => request.post<ValidationRequestBody>('/validate', data),
-  updateProduct: ({ id, ...rest }: Product) => request.put<Omit<Product, 'id'>>(`/products/${id}`, { ...rest }),
-  addProduct: (product: Product) => request.post<Product>('/products', { ...product }),
+  validateProductName: (data: ValidationRequestBody) => request.post<ValidationRequestBody, void>('/validate', data),
+  updateProduct: ({ id, ...rest }: Product) => request.put<ProductWithoutId, Product>(`/products/${id}`, { ...rest }),
+  addProduct: (product: ProductWithoutId) => request.post<ProductWithoutId, Product>('/products', { ...product }),
 };
 
 export const api = { products };

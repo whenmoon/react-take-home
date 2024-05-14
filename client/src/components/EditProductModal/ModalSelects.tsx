@@ -6,10 +6,11 @@ import { ProductForm } from './types';
 import { Control, FieldErrors } from 'react-hook-form';
 import { CLOTHING_SIZES, FOOTWARE_SIZES } from '../../constants';
 import { capitalise, createSelectOptions } from '../ProductList/utils';
+import { getDefaultSelectValue } from './utils';
 
 type ModalSelectsProps = {
   productCategoryData?: ProductCategoryData;
-  product: Product;
+  product?: Product;
   control: Control<ProductForm>
   inputValidationErrors: FieldErrors<ProductForm>
   selectedProductType: SelectOption
@@ -23,7 +24,9 @@ export const ModalSelects = ({
   control
 }: ModalSelectsProps) => {
 
-  const { brand, style, colour, materials: productMaterials, neckline } = product;
+  const { brand, style, colour, materials: productMaterials, neckline } = product
+    || { brand: '', style: '', colour: '', productMaterials: '', neckline: '' };
+
   const { types, features, brands, styles, colors, materials, necklines } = productCategoryData || {};
 
   const {
@@ -61,7 +64,7 @@ export const ModalSelects = ({
             options={brands || []}
             name="brand"
             label="Brand"
-            defaultValue={{ value: brand, label: capitalise(brand) }}
+            defaultValue={getDefaultSelectValue(brand)}
             control={control}
             error={brandError}
           />
@@ -70,7 +73,7 @@ export const ModalSelects = ({
               options={styles}
               name="style"
               label="Style"
-              defaultValue={style ? { value: style, label: capitalise(style) } : undefined}
+              defaultValue={getDefaultSelectValue(style)}
               control={control}
               error={styleError}
             />
@@ -80,9 +83,7 @@ export const ModalSelects = ({
               options={materials}
               name="material"
               label="Material"
-              defaultValue={
-                productMaterials ? { value: productMaterials, label: capitalise(productMaterials) } : undefined
-              }
+              defaultValue={getDefaultSelectValue(productMaterials)}
               control={control}
               error={materialsError}
             />
@@ -92,7 +93,7 @@ export const ModalSelects = ({
               options={colors}
               name="color"
               label="Color"
-              defaultValue={colour ? { value: colour, label: capitalise(colour) } : undefined}
+              defaultValue={getDefaultSelectValue(colour)}
               control={control}
               error={colorsError}
             />
@@ -102,7 +103,7 @@ export const ModalSelects = ({
               options={necklines}
               name="neckline"
               label="NeckLine"
-              defaultValue={neckline ? { value: neckline, label: capitalise(neckline) } : undefined}
+              defaultValue={getDefaultSelectValue(neckline)}
               control={control}
               error={necklinesError}
             />

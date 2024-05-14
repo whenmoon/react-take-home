@@ -13,20 +13,20 @@ export const EditProductModal = ({
   productCategoryData,
   setProductUpdateSuccess
 }: EditProductModalProps): ReactElement => {
-  const { productId } = useModalContext();
+  const { productId, newProduct } = useModalContext();
 
   return (
     <ReactModal
-      isOpen={!!productId}
+      isOpen={!!productId || newProduct}
       ariaHideApp={false}
       style={{
         overlay: {
           width: '75%',
           height: '75%',
           opacity: 0.95,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
+          position: 'absolute',
+          top: '10%',
+          left: '12.5%',
         }
       }}
     >
@@ -34,6 +34,7 @@ export const EditProductModal = ({
         productId={productId}
         productCategoryData={productCategoryData}
         setProductUpdateSuccess={setProductUpdateSuccess}
+        newProduct={newProduct}
       />
     </ReactModal>
   );
