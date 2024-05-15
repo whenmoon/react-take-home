@@ -20,10 +20,10 @@ The app is suited to all screen sizes and devices. Tailwind utility classes are 
 ## Notes On Technical Approach
 - There is basic unit test coverage of the "util" functions in the client application. I would like to increase the coverage to components, hooks and other business logic.
 - The API is abstracted to a client implementation to allow for reusable and extendable fetch methods. These have been easily integrated with a caching and synchronization layer.
-- Reusable UI components have been built are far as possible within the time constraints
-- Client-side form validation is implemented to match product updates with data schemas and preserve unnecessary network requests
-- The app uses `ModalContext` to avoid re-rendering the product list when the modal is opened and closed. The Product list is then programmatically re-fetched when necessary 
-- Ideally there would be less data parsing to populated the Select component options but I think achieving both this and persisting server-side data are a matter for the API.
+- Reusable UI components have been built are far as possible within the time constraints.
+- Client-side form validation is implemented to match product updates with data schemas and prevent unnecessary network requests.
+- The app uses `ModalContext` to avoid re-rendering the product list when the modal is opened and closed. The Product list is then programmatically re-fetched when necessary.
+- Ideally there would be less data parsing to populate the Select component options but I think achieving both this and persisting server-side data are a matter for the API.
 
 ## Screen Recordings:
 ### Responsive Product List:
