@@ -33,7 +33,7 @@ export const EditProductModalContent = ({
     setProductId,
     submitForm,
     inputValidationErrors,
-    formSubmitionError,
+    formSubmissionError,
     setNewProduct
   } = useEditProduct(setProductUpdateSuccess, newProduct, productId);
 
@@ -46,13 +46,13 @@ export const EditProductModalContent = ({
     }
   };
 
-  if (productQueryError || formSubmitionError) {
+  if (productQueryError || formSubmissionError) {
     return (
       <div className="h-full flex justify-center" >
         <div>
           <div className="mt-32">
             <Alert
-              message={productQueryError?.message || formSubmitionError?.message}
+              message={productQueryError?.message || formSubmissionError?.message}
               type="error"
             />
           </div>

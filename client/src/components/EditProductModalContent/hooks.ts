@@ -52,7 +52,7 @@ export const useEditProduct = (
   setProductId: Dispatch<SetStateAction<number | undefined>>
   submitForm: () => Promise<void>
   inputValidationErrors: FieldErrors<ProductForm>
-  formSubmitionError: Error | null;
+  formSubmissionError: Error | null;
   setNewProduct: Dispatch<SetStateAction<boolean>>
 } => {
   const { data: product, isFetching, isLoading, error: productQueryError } = useQuery({
@@ -95,11 +95,11 @@ export const useEditProduct = (
 
   const { setProductId, setNewProduct } = useModalContext();
 
-  const { mutateAsync: updateProduct, error: formSubmitionUpdateError } = useMutation({
+  const { mutateAsync: updateProduct, error: formSubmissionUpdateError } = useMutation({
     mutationFn: (data: Product) => api.products.updateProduct(data),
   });
 
-  const { mutateAsync: createProduct, error: formSubmitionCreateError } = useMutation({
+  const { mutateAsync: createProduct, error: formSubmissionCreateError } = useMutation({
     mutationFn: (data: ProductWithoutId) => api.products.addProduct(data),
   });
 
@@ -137,7 +137,7 @@ export const useEditProduct = (
     setProductId,
     submitForm,
     inputValidationErrors: errors,
-    formSubmitionError: formSubmitionUpdateError || formSubmitionCreateError,
+    formSubmissionError: formSubmissionUpdateError || formSubmissionCreateError,
     setNewProduct
   };
 };

@@ -4,7 +4,7 @@ import { ProductCategoryData, SelectOption } from '../ProductList/types';
 import { Product } from '../../api/types';
 import { ProductForm } from './types';
 import { Control, FieldErrors } from 'react-hook-form';
-import { CLOTHING_SIZES, FOOTWARE_SIZES } from '../../constants';
+import { CLOTHING_SIZES, FOOTWEAR_SIZES } from '../../constants';
 import { createSelectOptions } from '../ProductList/utils';
 import { getDefaultSelectValue } from './utils';
 
@@ -41,7 +41,7 @@ export const ModalSelects = ({
   } = inputValidationErrors;
 
   const sizeOptions = selectedProductType?.value === 'footwear'
-    ? createSelectOptions(FOOTWARE_SIZES)
+    ? createSelectOptions(FOOTWEAR_SIZES)
     : createSelectOptions(CLOTHING_SIZES);
 
   const showStyles = selectedProductType?.value === 'footwear' && styles;

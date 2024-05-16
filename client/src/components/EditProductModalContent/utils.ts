@@ -1,4 +1,4 @@
-import { ClothingSize, FootwareSize, Product, ProductType } from "../../api/types";
+import { ClothingSize, FootwearSize, Product, ProductType } from "../../api/types";
 import { SelectOption } from "../ProductList/types";
 import { capitalise } from "../ProductList/utils";
 import { ProductForm } from "./types";
@@ -10,7 +10,7 @@ export const parseFormData = (formData: ProductForm, productId?: number): Omit<P
     name: name,
     type: type.value as ProductType,
     brand: brand.value,
-    sizes: sizes.map((size) => size.value) as ClothingSize[] | FootwareSize[],
+    sizes: sizes.map((size) => size.value) as ClothingSize[] | FootwearSize[],
     features: features.map(feature => feature.value),
     style: style?.value,
     colour: color?.value,
