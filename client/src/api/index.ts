@@ -29,11 +29,11 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const request = {
   get: <R>(url: string, config?: AxiosRequestConfig) =>
-    axios.get<R>(url, config).then(responseBody),
+    axios.get<R, AxiosResponse<R>>(url, config).then(responseBody),
   post: <D, R>(url: string, data?: D, config?: AxiosRequestConfig) =>
-    axios.post<R>(url, data, config).then(responseBody),
+    axios.post<R, AxiosResponse<R>, D>(url, data, config).then(responseBody),
   put: <D, R>(url: string, data?: D, config?: AxiosRequestConfig) =>
-    axios.put<R>(url, data, config).then(responseBody),
+    axios.put<R, AxiosResponse<R>, D>(url, data, config).then(responseBody),
 };
 
 const products = {
